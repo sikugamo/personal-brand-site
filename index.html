@@ -3,618 +3,750 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Theo Lindqvist</title>
+<title>Kai Chen</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Theo Lindqvist designs quiet software for people who think for a living. Articles, free resources, and notes on the craft. 中文版可用。">
+<meta name="description" content="Kai Chen tests AI models, builds with the tools, and explains what's worth your time. Articles, free resources, and a weekly newsletter. 中文版可用。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=Noto+Sans+SC:wght@300;500;700&family=Noto+Serif+SC:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
 <style>
-/* Layout: an annotated manuscript. A wide text column with a narrow margin column for
-   mono marginalia, as if the author marked up their own page in blue ink. */
+/* Layout: an "embedding space". The site is organised by four topic clusters, each with
+   its own hue; the hero plots every piece of content as a point in a live 3D map, and the
+   same colours mark topics everywhere else. Dark-first, with a light theme. */
 :root {
-  --paper: #edf0f4;      /* porcelain, cool */
-  --paper-2: #e1e6ef;    /* raised tint */
-  --ink: #16236b;        /* ultramarine ink: text AND accent */
-  --ink-soft: #4b5690;
-  --wash: #c6d1f3;       /* periwinkle highlighter */
-  --rule: rgba(22, 35, 107, .16);
-  --sun: #b8661c;        /* ochre, used only for live/new signals */
+  --bg: #090b12;
+  --bg-2: #0d1019;
+  --surface: #121624;
+  --surface-2: #1a1f31;
+  --line: rgba(205, 214, 255, .085);
+  --line-2: rgba(205, 214, 255, .16);
+  --fg: #eef0f8;
+  --muted: #9298ae;
+  --faint: #5e647b;
+  --c-agents: #8d95ff;
+  --c-models: #3fd8c6;
+  --c-tools: #ffb648;
+  --c-tutorials: #ff6f9b;
+  --glow: .5;
+  --on-accent: #090b12;
 
-  /* Latin faces first; CJK glyphs fall through to Noto SC. */
-  --f-display: "Bricolage Grotesque", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
-  --f-body: "Newsreader", "Noto Serif SC", "Songti SC", Georgia, "Times New Roman", serif;
-  --f-mono: "IBM Plex Mono", "Noto Sans SC", ui-monospace, Menlo, Consolas, monospace;
+  --f-display: "Archivo", "Noto Sans SC", system-ui, sans-serif;
+  --f-body: "Hanken Grotesk", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", "Noto Sans SC", ui-monospace, Menlo, Consolas, monospace;
 
-  --step--1: .78rem;
-  --step-0: 1.0625rem;
-  --step-1: 1.3rem;
-  --step-2: clamp(1.5rem, 1.2rem + 1.2vw, 2.1rem);
-  --step-3: clamp(2.1rem, 1.4rem + 3vw, 3.6rem);
-  --step-4: clamp(2.5rem, 1.2rem + 5.6vw, 6.4rem);
+  --t-xs: .76rem;
+  --t-sm: .9rem;
+  --t-md: 1.0625rem;
+  --t-lg: 1.25rem;
+  --t-xl: clamp(1.45rem, 1.15rem + 1.1vw, 2rem);
+  --t-2xl: clamp(2rem, 1.3rem + 2.8vw, 3.4rem);
+  --t-hero: clamp(2.7rem, 1.2rem + 5.4vw, 5.6rem);
 
-  --margin-col: 13.5rem;
-  --max: 1320px;
+  --max: 1280px;
+  --r: 18px;
+  color-scheme: dark;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #0f2350; --paper-2: #16306a; --ink: #e8eefb; --ink-soft: #a9b8de;
-    --wash: #2b4a9a; --rule: rgba(232, 238, 251, .18); --sun: #eaa95e; color-scheme: dark;
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f4f5fa; --bg-2: #eceef6; --surface: #ffffff; --surface-2: #eef0f7;
+    --line: rgba(18, 22, 48, .08); --line-2: rgba(18, 22, 48, .15);
+    --fg: #0e1122; --muted: #575e78; --faint: #9aa0b5;
+    --c-agents: #545ce6; --c-models: #0a9b8a; --c-tools: #c47600; --c-tutorials: #d6386a;
+    --glow: .22; --on-accent: #ffffff; color-scheme: light;
   }
 }
-:root[data-theme="dark"] {
-  --paper: #0f2350; --paper-2: #16306a; --ink: #e8eefb; --ink-soft: #a9b8de;
-  --wash: #2b4a9a; --rule: rgba(232, 238, 251, .18); --sun: #eaa95e; color-scheme: dark;
+:root[data-theme="light"] {
+  --bg: #f4f5fa; --bg-2: #eceef6; --surface: #ffffff; --surface-2: #eef0f7;
+  --line: rgba(18, 22, 48, .08); --line-2: rgba(18, 22, 48, .15);
+  --fg: #0e1122; --muted: #575e78; --faint: #9aa0b5;
+  --c-agents: #545ce6; --c-models: #0a9b8a; --c-tools: #c47600; --c-tutorials: #d6386a;
+  --glow: .22; --on-accent: #ffffff; color-scheme: light;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 body {
-  margin: 0;
-  background: var(--paper);
-  color: var(--ink);
-  font: 400 var(--step-0)/1.6 var(--f-body);
-  font-optical-sizing: auto;
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 400 var(--t-md)/1.6 var(--f-body);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
-a { color: inherit; }
+body::before { /* paints the band under a phone's status bar */
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--bg);
+}
+a { color: inherit; text-decoration: none; }
 img { max-width: 100%; }
-::selection { background: var(--wash); color: var(--ink); }
-:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 2px; }
+button { font: inherit; color: inherit; }
+::selection { background: color-mix(in oklab, var(--c-agents) 45%, transparent); }
+:focus-visible { outline: 2px solid var(--c-agents); outline-offset: 3px; border-radius: 6px; }
 [hidden] { display: none !important; }
+h1, h2, h3 { margin: 0; font-family: var(--f-display); text-wrap: balance; font-weight: 700; }
+p { margin: 0; }
 
-.frame {
-  max-width: var(--max);
-  margin-inline: auto;
-  padding-left: max(16px, env(safe-area-inset-left, 0px), 4vw);
-  padding-right: max(16px, env(safe-area-inset-right, 0px), 4vw);
+.wrap {
+  max-width: var(--max); margin-inline: auto;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
 }
-.mono {
-  font-family: var(--f-mono);
-  font-size: var(--step--1);
-  letter-spacing: .04em;
-  line-height: 1.5;
+.mono { font-family: var(--f-mono); font-size: var(--t-xs); letter-spacing: .02em; }
+.kicker {
+  font-family: var(--f-mono); font-size: var(--t-xs); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--muted); display: inline-flex; align-items: center; gap: .6em;
 }
-.eyebrow {
-  font-family: var(--f-mono);
-  font-size: var(--step--1);
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  margin: 0;
-}
-h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; font-weight: 600; }
+.kicker::before { content: ""; width: 18px; height: 1px; background: currentColor; }
 
-/* ───────── masthead ───────── */
-.masthead {
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem 2rem;
-  flex-wrap: wrap;
-  padding-block: 1.6rem 1.2rem;
+/* topic colour plumbing: any element with data-topic gets --tc */
+[data-topic="agents"] { --tc: var(--c-agents); --tc2: var(--c-models); }
+[data-topic="models"] { --tc: var(--c-models); --tc2: var(--c-agents); }
+[data-topic="tools"] { --tc: var(--c-tools); --tc2: var(--c-tutorials); }
+[data-topic="tutorials"] { --tc: var(--c-tutorials); --tc2: var(--c-tools); }
+.tag {
+  display: inline-flex; align-items: center; gap: .45em; font-family: var(--f-mono); font-size: var(--t-xs);
+  color: var(--tc, var(--muted)); letter-spacing: .02em; white-space: nowrap;
 }
-.wordmark {
-  font-family: var(--f-display);
-  font-variation-settings: "wdth" 75;
-  font-weight: 700;
-  font-size: 1.35rem;
-  letter-spacing: -.01em;
-  text-decoration: none;
+.tag::before { content: ""; width: 7px; height: 7px; border-radius: 2px; background: currentColor; box-shadow: 0 0 10px currentColor; }
+
+/* ───────── nav ───────── */
+.topbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50;
+  background: color-mix(in oklab, var(--bg) 72%, transparent);
+  backdrop-filter: saturate(1.4) blur(16px); -webkit-backdrop-filter: saturate(1.4) blur(16px);
+  border-bottom: 1px solid var(--line);
 }
-.wordmark span { font-weight: 300; }
-.masthead-right { display: flex; align-items: center; flex-wrap: wrap; gap: .8rem clamp(1.2rem, 3vw, 2.6rem); }
-.nav { display: flex; gap: clamp(1rem, 3vw, 2.6rem); list-style: none; margin: 0; padding: 0; }
+.topbar .wrap { display: flex; align-items: center; gap: 1rem 1.6rem; min-height: 64px; flex-wrap: wrap; padding-block: .5rem; }
+.brand { display: inline-flex; align-items: center; gap: .65rem; font-family: var(--f-display); font-weight: 700; font-stretch: 112%; font-size: 1.05rem; letter-spacing: -.01em; }
+.orb {
+  width: 26px; height: 26px; border-radius: 50%; flex: none;
+  background: conic-gradient(from var(--spin, 0deg), var(--c-agents), var(--c-models), var(--c-tools), var(--c-tutorials), var(--c-agents));
+  -webkit-mask: radial-gradient(circle at 50% 50%, transparent 5px, #000 5.5px);
+          mask: radial-gradient(circle at 50% 50%, transparent 5px, #000 5.5px);
+  animation: spin 9s linear infinite;
+}
+@property --spin { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@keyframes spin { to { --spin: 360deg; } }
+.nav { display: flex; gap: .25rem; list-style: none; margin: 0; padding: 0; }
+.topbar nav { margin-left: auto; }
 .nav a {
-  font-family: var(--f-mono); font-size: .82rem; letter-spacing: .04em;
-  text-decoration: none; padding-block: .3rem; position: relative;
+  display: inline-flex; align-items: baseline; gap: .35em; padding: .5rem .8rem; border-radius: 99px;
+  font-size: var(--t-sm); font-weight: 500; color: var(--muted); transition: color .2s, background .2s;
 }
-.nav a sup { color: var(--ink-soft); font-size: .68rem; margin-left: .2em; }
-.nav a::after {
-  content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px;
-  background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform .35s ease;
-}
-.nav a:hover::after, .nav a[aria-current="page"]::after { transform: scaleX(1); }
-
-/* segmented switches: language (masthead) and theme (footer) */
-.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 99px; padding: 2px; }
+.nav a:hover { color: var(--fg); background: var(--surface); }
+.nav a[aria-current="page"] { color: var(--fg); background: var(--surface-2); }
+.nav sup { font-family: var(--f-mono); font-size: .66rem; color: var(--faint); }
+.tools { display: flex; align-items: center; gap: .6rem; }
+.seg { display: inline-flex; padding: 3px; border-radius: 99px; background: var(--surface); border: 1px solid var(--line); }
 .seg button {
-  font: 500 .72rem/1 var(--f-mono); letter-spacing: .04em; color: var(--ink-soft); background: transparent; border: 0;
-  border-radius: 99px; padding: .45rem .7rem; cursor: pointer;
+  border: 0; background: transparent; cursor: pointer; padding: .38rem .62rem; border-radius: 99px;
+  font: 500 .74rem/1 var(--f-mono); color: var(--muted);
 }
-.seg button:hover { color: var(--ink); }
-.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.seg button[aria-pressed="true"] { background: var(--surface-2); color: var(--fg); box-shadow: inset 0 0 0 1px var(--line-2); }
+.btn {
+  display: inline-flex; align-items: center; gap: .5em; border-radius: 99px; cursor: pointer; white-space: nowrap;
+  font-weight: 600; font-size: var(--t-sm); padding: .72rem 1.15rem; border: 1px solid transparent;
+  transition: transform .2s, box-shadow .25s, background .2s;
+}
+.btn-primary { background: var(--fg); color: var(--bg); }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 30px -8px color-mix(in oklab, var(--c-agents) 70%, transparent); }
+.btn-ghost { border-color: var(--line-2); background: color-mix(in oklab, var(--surface) 60%, transparent); }
+.btn-ghost:hover { background: var(--surface-2); }
+.btn-sm { padding: .5rem .9rem; font-size: .82rem; }
+.arrow { transition: transform .2s; }
+.btn:hover .arrow, .link:hover .arrow, .pill:hover .arrow { transform: translateX(3px); }
 
 /* ───────── hero ───────── */
-.hero { padding-block: clamp(2.5rem, 7vw, 6rem) 0; }
-.hero-meta {
-  display: flex; flex-wrap: wrap; gap: .4rem 1.6rem; color: var(--ink-soft);
-  margin-bottom: clamp(1.5rem, 3vw, 2.4rem);
+.hero { position: relative; isolation: isolate; overflow: hidden; }
+.hero::before { /* faint measurement grid fading out from the map */
+  content: ""; position: absolute; inset: 0; z-index: -2;
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(70% 80% at 72% 45%, #000 20%, transparent 75%);
+          mask-image: radial-gradient(70% 80% at 72% 45%, #000 20%, transparent 75%);
 }
-.hero-meta .live::before {
-  content: ""; display: inline-block; width: .5em; height: .5em; border-radius: 50%;
-  background: var(--sun); margin-right: .5em; vertical-align: .05em;
-  animation: pulse 2.4s ease-in-out infinite;
+.hero::after { /* coloured light behind the map */
+  content: ""; position: absolute; z-index: -1; width: 70vw; height: 70vw; max-width: 900px; max-height: 900px;
+  right: -15vw; top: -20%;
+  background:
+    radial-gradient(closest-side at 35% 40%, color-mix(in oklab, var(--c-agents) 40%, transparent), transparent),
+    radial-gradient(closest-side at 65% 60%, color-mix(in oklab, var(--c-models) 26%, transparent), transparent),
+    radial-gradient(closest-side at 50% 80%, color-mix(in oklab, var(--c-tutorials) 18%, transparent), transparent);
+  opacity: var(--glow); filter: blur(30px);
 }
-@keyframes pulse { 50% { opacity: .35; } }
+.hero .wrap {
+  display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr); gap: 2rem 3rem; align-items: center;
+  padding-block: clamp(2.5rem, 6vw, 5rem) clamp(2rem, 5vw, 4rem);
+}
+.hero-copy { display: grid; gap: 1.6rem; justify-items: start; min-width: 0; }
+.pill {
+  display: inline-flex; align-items: center; gap: .7rem; max-width: 100%;
+  padding: .38rem .9rem .38rem .4rem; border-radius: 99px; font-size: .84rem;
+  background: color-mix(in oklab, var(--surface) 80%, transparent); border: 1px solid var(--line-2);
+  transition: border-color .2s;
+}
+.pill:hover { border-color: var(--tc, var(--line-2)); }
+.pill .new {
+  font: 600 .68rem/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; padding: .38rem .55rem; border-radius: 99px;
+  background: var(--tc, var(--c-agents)); color: var(--on-accent); flex: none;
+}
+.pill .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.headline {
+  font-size: var(--t-hero); line-height: .96; letter-spacing: -.035em; font-weight: 800; font-stretch: 125%;
+}
+.headline .grad {
+  background: linear-gradient(100deg, var(--c-agents) 0%, var(--c-models) 38%, var(--c-tools) 68%, var(--c-tutorials) 100%);
+  background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: sheen 8s ease-in-out infinite alternate;
+}
+@keyframes sheen { to { background-position: 100% 0; } }
+.sub { font-size: clamp(1.05rem, 1rem + .35vw, 1.25rem); color: var(--muted); max-width: 46ch; line-height: 1.55; }
+.sub b { color: var(--fg); font-weight: 600; }
+.cta-row { display: flex; flex-wrap: wrap; gap: .75rem; }
+.stats { display: flex; flex-wrap: wrap; gap: 1.2rem 2.4rem; padding-top: 1.4rem; border-top: 1px solid var(--line); width: 100%; }
+.stats div { display: grid; gap: .1rem; }
+.stats b { font-family: var(--f-display); font-stretch: 115%; font-weight: 700; font-size: 1.6rem; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.stats span { font-size: .82rem; color: var(--muted); }
 
-.thesis {
-  font-size: var(--step-4);
-  font-weight: 300;
-  font-variation-settings: "opsz" 96, "wdth" 92;
-  line-height: 1.04;
-  letter-spacing: -.035em;
-  max-width: 19ch;
-  text-wrap: pretty;
+.map { position: relative; min-width: 0; margin: 0; }
+.map-frame {
+  position: relative; aspect-ratio: 1 / 1; max-width: 100%;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--surface) 70%, transparent), transparent);
 }
-.thesis .mark { text-decoration: none; font-weight: 700; font-variation-settings: "opsz" 96, "wdth" 80; }
-.thesis .mark span {
-  background: linear-gradient(var(--wash), var(--wash)) no-repeat 0 92% / 0% .3em;
-  animation: underline .9s cubic-bezier(.6, 0, .2, 1) forwards;
-  animation-delay: calc(.5s + var(--i) * .45s);
-  transition: background-size .4s cubic-bezier(.6, 0, .2, 1);
-  -webkit-box-decoration-break: clone; box-decoration-break: clone;
-  padding-inline: .04em;
+.map canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: pan-y; cursor: grab; }
+.map canvas:active { cursor: grabbing; }
+.map-hud { position: absolute; left: 0; right: 0; top: .6rem; display: flex; justify-content: space-between; gap: 1rem; color: var(--faint); pointer-events: none; }
+.tip {
+  position: absolute; z-index: 3; pointer-events: none; max-width: 240px; padding: .65rem .8rem; border-radius: 12px;
+  background: color-mix(in oklab, var(--surface-2) 92%, transparent); border: 1px solid var(--line-2);
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, .5); display: grid; gap: .3rem; font-size: .88rem; line-height: 1.35;
+  transform: translate(-50%, calc(-100% - 14px));
 }
-@keyframes underline { to { background-size: 100% .3em; } }
-.thesis .mark:hover span, .thesis .mark:focus-visible span { background-size: 100% 100%; }
+.tip b { font-weight: 600; }
+.legend { display: flex; flex-wrap: wrap; justify-content: center; gap: .45rem; margin-top: .4rem; }
+.legend button {
+  display: inline-flex; align-items: center; gap: .5em; cursor: pointer; padding: .42rem .75rem; border-radius: 99px;
+  background: var(--surface); border: 1px solid var(--line); font: 500 .76rem/1 var(--f-mono); color: var(--muted);
+  transition: border-color .2s, color .2s;
+}
+.legend button i { width: 8px; height: 8px; border-radius: 50%; background: var(--tc); box-shadow: 0 0 10px var(--tc); }
+.legend button:hover, .legend button[aria-pressed="true"] { color: var(--fg); border-color: var(--tc); }
+.map-caption { text-align: center; color: var(--faint); margin-top: .7rem; }
 
-.ledger {
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem clamp(1.5rem, 4vw, 4rem);
-  margin-top: clamp(3rem, 7vw, 5.5rem);
-  padding-block: 1.4rem 0;
-  border-top: 1.5px solid var(--ink);
-}
-.ledger > * { min-width: 0; display: grid; gap: .45rem; align-content: start; }
-.ledger a { text-decoration: none; }
-.ledger h3 { font-size: var(--step-1); line-height: 1.2; font-weight: 600; letter-spacing: -.01em; }
-.ledger a:hover h3 { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: .18em; }
-.ledger p { margin: 0; color: var(--ink-soft); font-size: .98rem; line-height: 1.5; }
+/* ───────── sections ───────── */
+.section { padding-block: clamp(4rem, 9vw, 7rem) 0; }
+.section-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1rem 2rem; margin-bottom: 2rem; }
+.section-head > div { display: grid; gap: .8rem; max-width: 40rem; }
+.section-head h2 { font-size: var(--t-2xl); letter-spacing: -.03em; line-height: 1.02; font-stretch: 118%; font-weight: 750; }
+.section-head p { color: var(--muted); }
+.link { display: inline-flex; align-items: center; gap: .45em; font-weight: 600; font-size: var(--t-sm); white-space: nowrap; }
 
-/* ───────── sections (home) ───────── */
-.section {
-  display: grid; grid-template-columns: var(--margin-col) minmax(0, 1fr); gap: 2rem clamp(2rem, 5vw, 5rem);
-  padding-block: clamp(4rem, 9vw, 7.5rem) 0;
+/* covers: generative art per topic */
+.cover {
+  position: relative; overflow: hidden; border-radius: 14px; aspect-ratio: 16 / 10; max-width: 100%;
+  background:
+    radial-gradient(90% 90% at var(--x1, 20%) var(--y1, 25%), color-mix(in oklab, var(--tc) 75%, transparent), transparent 62%),
+    radial-gradient(80% 80% at var(--x2, 85%) var(--y2, 80%), color-mix(in oklab, var(--tc2) 55%, transparent), transparent 60%),
+    #151a2b;
+  isolation: isolate;
 }
-.section > aside { position: sticky; top: 2rem; align-self: start; display: grid; gap: .9rem; }
-.section > aside h2 { font-size: var(--step-2); letter-spacing: -.02em; line-height: 1.1; }
-.section > aside p { margin: 0; color: var(--ink-soft); font-size: .98rem; line-height: 1.5; }
-.more {
-  font-family: var(--f-mono); font-size: var(--step--1); letter-spacing: .04em;
-  text-decoration: none; display: inline-flex; gap: .5em; align-items: center;
+.cover::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; opacity: .7;
+  background-image: linear-gradient(rgba(255,255,255,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+  -webkit-mask-image: linear-gradient(160deg, #000, transparent 70%); mask-image: linear-gradient(160deg, #000, transparent 70%);
 }
-.more::after { content: "→"; transition: transform .25s; }
-.more:hover::after { transform: translateX(4px); }
+.cover svg { position: absolute; right: 8%; bottom: 10%; width: 38%; max-width: 180px; color: rgba(255,255,255,.92); filter: drop-shadow(0 6px 24px rgba(0,0,0,.3)); transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.cover .cover-label { position: absolute; left: 1rem; top: .9rem; font: 500 .7rem/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.88); }
+a:hover .cover svg { transform: translateY(-4px) rotate(-3deg) scale(1.04); }
 
-/* article index */
-.index { list-style: none; margin: 0; padding: 0; }
-.index li + li { border-top: 1px solid var(--rule); }
-.entry {
-  display: grid; grid-template-columns: 6.5rem minmax(0, 1fr) 7rem; gap: .3rem 1.5rem;
-  padding-block: 1.35rem; text-decoration: none; align-items: baseline;
+/* bento of latest articles */
+.bento { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 1.25rem; }
+.feature, .mini {
+  display: grid; gap: 1rem; padding: 12px 12px 1.4rem; border-radius: var(--r); align-content: start; min-width: 0;
+  background: var(--surface); border: 1px solid var(--line); transition: border-color .25s, transform .25s;
 }
-.entry time { color: var(--ink-soft); }
-.entry h3 {
-  font-size: var(--step-2); line-height: 1.12; letter-spacing: -.022em; font-weight: 500;
-  font-variation-settings: "opsz" 60, "wdth" 90;
-  transition: font-variation-settings .4s ease, color .2s;
-}
-.entry:hover h3 { font-variation-settings: "opsz" 60, "wdth" 78; font-weight: 700; }
-.entry .dek { grid-column: 2; margin: 0; color: var(--ink-soft); max-width: 58ch; }
-.readtime { grid-column: 3; grid-row: 1; display: grid; gap: .35rem; justify-items: end; }
-.readtime .bar { width: 100%; height: 3px; background: var(--rule); position: relative; }
-.readtime .bar i { position: absolute; inset: 0 auto 0 0; background: var(--ink); width: calc(var(--m) / 20 * 100%); }
+.feature:hover, .mini:hover { border-color: color-mix(in oklab, var(--tc) 55%, var(--line)); transform: translateY(-2px); }
+.feature .text, .mini .text { display: grid; gap: .6rem; padding-inline: .5rem; justify-items: start; }
+.feature h3 { font-size: var(--t-xl); line-height: 1.12; letter-spacing: -.02em; font-stretch: 108%; }
+.feature p { color: var(--muted); }
+.stack { display: grid; gap: 1.25rem; }
+.mini { grid-template-columns: 132px minmax(0, 1fr); align-items: center; align-content: center; padding: 10px; gap: 1rem; }
+.mini .cover { aspect-ratio: 1 / 1; border-radius: 10px; }
+.mini .cover svg { width: 56%; right: 22%; bottom: 18%; }
+.mini .cover .cover-label { display: none; }
+.mini .text { padding: 0 .4rem 0 0; gap: .45rem; }
+.mini h3 { font-size: 1.08rem; line-height: 1.25; font-weight: 650; letter-spacing: -.01em; }
+.meta { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .9rem; color: var(--faint); font-family: var(--f-mono); font-size: var(--t-xs); }
 
 /* resources */
-.shelf { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2.4rem 1.6rem; }
-.res { display: grid; gap: .75rem; text-decoration: none; align-content: start; min-width: 0; }
-.res .cover {
-  aspect-ratio: 4 / 3; max-width: 100%; background: var(--paper-2); position: relative; overflow: hidden;
-  display: grid; place-items: center;
+.res-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+.window {
+  display: block; border-radius: var(--r); overflow: hidden; background: var(--bg-2); border: 1px solid var(--line-2); min-width: 0;
+  box-shadow: 0 30px 80px -40px color-mix(in oklab, var(--c-models) 60%, transparent);
 }
-.res .cover b {
-  position: relative;
-  font-family: var(--f-display); font-weight: 800; font-variation-settings: "opsz" 96, "wdth" 75;
-  font-size: clamp(3rem, 7vw, 5.4rem); letter-spacing: -.05em; line-height: 1;
-  transition: transform .6s cubic-bezier(.2, .7, .2, 1);
+.window-bar { display: flex; align-items: center; gap: .5rem; padding: .75rem 1rem; border-bottom: 1px solid var(--line); background: var(--surface); }
+.window-bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--line-2); }
+.window-bar span { margin-left: .5rem; color: var(--muted); }
+.window pre {
+  margin: 0; padding: 1.2rem 1.25rem 1.4rem; overflow-x: auto; font: 400 .84rem/1.75 var(--f-mono); color: var(--fg); tab-size: 2;
 }
-.res:hover .cover b { transform: scale(1.06) rotate(-2deg); }
-.res .cover .fmt { position: absolute; left: .8rem; bottom: .7rem; color: var(--ink-soft); }
-.res .cover .price { position: absolute; right: .8rem; top: .7rem; }
-.res .cover::before { /* cyanotype exposure: a faint wash that floods in on hover */
-  content: ""; position: absolute; inset: 0; background: var(--wash); transform: translateY(101%);
-  transition: transform .6s cubic-bezier(.2, .7, .2, 1);
+.k { color: var(--c-agents); } .s { color: var(--c-models); } .c { color: var(--faint); } .n { color: var(--c-tools); } .p { color: var(--c-tutorials); }
+.caret { display: inline-block; width: .55em; height: 1.1em; background: var(--c-models); vertical-align: -.2em; animation: blink 1.1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.window-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .8rem; padding: 1rem 1.25rem; border-top: 1px solid var(--line); background: var(--surface); }
+.window-foot b { font-family: var(--f-display); font-stretch: 110%; font-size: 1.05rem; }
+.window-foot p { color: var(--muted); font-size: .88rem; }
+
+.res-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; }
+.res-row {
+  display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: .2rem 1rem; align-items: center;
+  padding: .9rem 1rem; border-radius: 14px; border: 1px solid var(--line); background: var(--surface);
+  transition: border-color .2s, background .2s;
 }
-.res:hover .cover::before { transform: translateY(0); }
-.res h3 { font-size: var(--step-1); font-weight: 600; letter-spacing: -.01em; line-height: 1.2; }
-.res p { margin: 0; color: var(--ink-soft); font-size: .96rem; line-height: 1.5; }
+.res-row:hover { border-color: color-mix(in oklab, var(--tc) 55%, var(--line)); background: var(--surface-2); }
+.glyph {
+  width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; grid-row: span 2;
+  background: color-mix(in oklab, var(--tc) 18%, transparent); color: var(--tc); border: 1px solid color-mix(in oklab, var(--tc) 35%, transparent);
+}
+.glyph svg { width: 22px; height: 22px; }
+.res-row h3 { grid-column: 2; font-size: 1rem; font-weight: 650; letter-spacing: -.005em; font-family: var(--f-body); }
+.res-row .meta { grid-column: 2; }
+.price { font: 500 .74rem/1 var(--f-mono); padding: .45rem .6rem; border-radius: 99px; border: 1px solid var(--line-2); color: var(--fg); white-space: nowrap; }
+.res-row .price { grid-row: 1 / span 2; grid-column: 3; }
 
 /* about teaser */
-.about-teaser { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 2rem clamp(2rem, 5vw, 4.5rem); align-items: end; }
-.portrait {
-  margin: 0; aspect-ratio: 4 / 5; max-width: 100%; background: var(--wash); position: relative; overflow: hidden;
-  display: grid; place-items: center;
+.about-card {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2rem clamp(2rem, 5vw, 4rem); align-items: center;
+  padding: clamp(1.5rem, 4vw, 3rem); border-radius: 28px; background: var(--surface); border: 1px solid var(--line);
 }
-/* Drop a photo in here: it gets a blue-ink duotone automatically. */
-.portrait img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.15); mix-blend-mode: multiply; }
-.portrait .initials {
-  font-family: var(--f-display); font-weight: 200; font-variation-settings: "opsz" 96, "wdth" 75;
-  font-size: clamp(6rem, 16vw, 12rem); letter-spacing: -.06em; line-height: 1; opacity: .9;
+.avatar {
+  width: clamp(140px, 22vw, 240px); aspect-ratio: 1; max-width: 100%; border-radius: 50%; position: relative; display: grid; place-items: center;
+  background: conic-gradient(from var(--spin, 0deg), var(--c-agents), var(--c-models), var(--c-tools), var(--c-tutorials), var(--c-agents));
+  animation: spin 14s linear infinite; padding: 4px;
 }
-.portrait .note { position: absolute; left: .8rem; bottom: .7rem; color: var(--ink-soft); }
-.about-teaser blockquote {
-  margin: 0; font-family: var(--f-body); font-size: var(--step-2); line-height: 1.3; font-weight: 300;
-  font-variation-settings: "opsz" 48; letter-spacing: -.01em; max-width: 30ch;
+.avatar > div { width: 100%; height: 100%; border-radius: 50%; background: var(--surface-2); display: grid; place-items: center; overflow: hidden; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.avatar span { font-family: var(--f-display); font-stretch: 125%; font-weight: 800; font-size: clamp(2.4rem, 5vw, 4rem); letter-spacing: -.04em; }
+.about-card .text { display: grid; gap: 1.1rem; justify-items: start; }
+.about-card h2 { font-size: var(--t-xl); line-height: 1.2; letter-spacing: -.02em; font-stretch: 108%; }
+.about-card p { color: var(--muted); max-width: 58ch; }
+.topic-chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+.topic-chips a {
+  display: inline-flex; gap: .6em; align-items: center; padding: .5rem .85rem; border-radius: 99px; font-size: .86rem; font-weight: 500;
+  background: color-mix(in oklab, var(--tc) 12%, transparent); border: 1px solid color-mix(in oklab, var(--tc) 30%, transparent);
 }
-.about-teaser .body { display: grid; gap: 1.4rem; }
-.about-teaser .body p { margin: 0; color: var(--ink-soft); max-width: 52ch; }
+.topic-chips a b { font: 500 .72rem var(--f-mono); color: var(--tc); }
 
-/* ───────── page headers (inner views) ───────── */
-.page-head {
-  display: grid; grid-template-columns: var(--margin-col) minmax(0, 1fr); gap: 1rem clamp(2rem, 5vw, 5rem);
-  padding-block: clamp(3rem, 8vw, 6rem) clamp(2rem, 4vw, 3rem);
-  align-items: end;
+/* newsletter */
+.letter { position: relative; border-radius: 28px; padding: 2px; overflow: hidden; isolation: isolate; }
+.letter::before {
+  content: ""; position: absolute; inset: -50%; z-index: -1;
+  background: conic-gradient(from var(--spin, 0deg), var(--c-agents), var(--c-models), var(--c-tools), var(--c-tutorials), var(--c-agents));
+  animation: spin 10s linear infinite;
 }
-.page-head h1 {
-  font-size: var(--step-4); font-weight: 700; letter-spacing: -.045em; line-height: .95;
-  font-variation-settings: "opsz" 96, "wdth" 78;
+.letter-inner {
+  border-radius: 26px; background: var(--bg-2);
+  display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 2rem 3rem; align-items: center;
+  padding: clamp(1.75rem, 5vw, 3.5rem);
+  background-image: radial-gradient(60% 120% at 100% 0%, color-mix(in oklab, var(--c-agents) 16%, transparent), transparent 70%);
 }
-.page-head h1 sup { font-family: var(--f-mono); font-size: .9rem; font-weight: 400; letter-spacing: 0; vertical-align: 2.8em; margin-left: .3em; color: var(--ink-soft); }
-.page-head .lede { grid-column: 2; margin: 0; max-width: 46ch; font-size: var(--step-1); line-height: 1.45; color: var(--ink-soft); }
+.letter h2 { font-size: var(--t-2xl); line-height: 1.02; letter-spacing: -.03em; font-stretch: 118%; font-weight: 750; }
+.letter .text { display: grid; gap: 1rem; justify-items: start; }
+.letter .text p { color: var(--muted); max-width: 44ch; }
+.letter form { display: grid; gap: .7rem; }
+.field { display: flex; gap: .5rem; padding: 6px; border-radius: 99px; background: var(--surface); border: 1px solid var(--line-2); }
+.field:focus-within { border-color: var(--c-agents); }
+.field input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--fg); font: 400 1rem var(--f-body); padding: .5rem .9rem; }
+.field input::placeholder { color: var(--faint); }
+.letter .status { min-height: 1.4em; font-size: .86rem; color: var(--c-models); }
+.letter .fine { color: var(--faint); font-size: .8rem; }
 
-.filter-row { display: grid; grid-template-columns: var(--margin-col) minmax(0, 1fr); gap: 0 clamp(2rem, 5vw, 5rem); }
-.filter-row.flush { display: block; }
-.filters { grid-column: 2; display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 2rem; }
-.filters button {
-  font: 500 var(--step--1)/1 var(--f-mono); letter-spacing: .04em; color: var(--ink);
-  background: transparent; border: 1px solid var(--rule); padding: .55rem .8rem; border-radius: 99px; cursor: pointer;
-  transition: background .2s, border-color .2s;
+/* ───────── inner pages ───────── */
+.page-head { padding-block: clamp(3rem, 8vw, 5.5rem) 2rem; display: grid; gap: 1rem; justify-items: start; }
+.page-head h1 { font-size: var(--t-hero); line-height: .95; letter-spacing: -.04em; font-weight: 800; font-stretch: 125%; }
+.page-head h1 sup { font: 500 .9rem var(--f-mono); letter-spacing: 0; vertical-align: 2.6em; margin-left: .4em; color: var(--faint); }
+.page-head p { color: var(--muted); max-width: 52ch; font-size: var(--t-lg); line-height: 1.5; }
+.toolbar { display: flex; flex-wrap: wrap; gap: .8rem 1.2rem; align-items: center; justify-content: space-between; margin-bottom: 1.8rem; }
+.chips { display: flex; flex-wrap: wrap; gap: .45rem; }
+.chips button {
+  display: inline-flex; align-items: center; gap: .5em; cursor: pointer; padding: .5rem .85rem; border-radius: 99px;
+  background: var(--surface); border: 1px solid var(--line); font: 500 .82rem/1 var(--f-body); color: var(--muted);
 }
-.filters button:hover { border-color: var(--ink); }
-.filters button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.chips button i { width: 7px; height: 7px; border-radius: 50%; background: var(--tc, var(--muted)); }
+.chips button:hover { color: var(--fg); border-color: var(--line-2); }
+.chips button[aria-pressed="true"] { color: var(--fg); background: var(--surface-2); border-color: var(--tc, var(--fg)); }
+.search { display: flex; align-items: center; gap: .5rem; padding: .25rem .9rem; border-radius: 99px; background: var(--surface); border: 1px solid var(--line); min-width: 0; flex: 0 1 300px; }
+.search:focus-within { border-color: var(--c-agents); }
+.search svg { width: 16px; height: 16px; color: var(--faint); flex: none; }
+.search input { border: 0; outline: 0; background: transparent; color: var(--fg); font: 400 .92rem var(--f-body); padding: .5rem 0; min-width: 0; width: 100%; }
+.search input::placeholder { color: var(--faint); }
 
-.year-group { display: grid; grid-template-columns: var(--margin-col) minmax(0, 1fr); gap: 0 clamp(2rem, 5vw, 5rem); }
-.year-group + .year-group { margin-top: 2.5rem; }
-.year-group > h2 {
-  font-size: var(--step-3); font-weight: 200; letter-spacing: -.04em; line-height: 1;
-  font-variation-settings: "opsz" 96, "wdth" 75; padding-top: 1.1rem; color: var(--ink-soft);
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
+.card {
+  display: grid; gap: .9rem; align-content: start; padding: 10px 10px 1.25rem; border-radius: var(--r); min-width: 0;
+  background: var(--surface); border: 1px solid var(--line); transition: border-color .25s, transform .25s;
 }
-.year-group .index { border-top: 1.5px solid var(--ink); }
+.card:hover { border-color: color-mix(in oklab, var(--tc) 55%, var(--line)); transform: translateY(-2px); }
+.card .text { display: grid; gap: .55rem; padding-inline: .45rem; }
+.card h3 { font-size: 1.16rem; line-height: 1.25; letter-spacing: -.012em; font-weight: 650; font-stretch: 104%; }
+.card p { color: var(--muted); font-size: .95rem; line-height: 1.5; }
+.card .row { display: flex; justify-content: space-between; align-items: center; gap: .6rem; flex-wrap: wrap; }
+.empty { grid-column: 1 / -1; padding: 3rem 1rem; text-align: center; color: var(--muted); border: 1px dashed var(--line-2); border-radius: var(--r); }
 
 /* about page */
-.about-grid { display: grid; grid-template-columns: var(--margin-col) minmax(0, 1fr); gap: 2rem clamp(2rem, 5vw, 5rem); }
-.facts { position: sticky; top: 2rem; align-self: start; display: grid; gap: 1.2rem; margin: 0; }
-.facts div { display: grid; gap: .2rem; }
-.facts dt { font-family: var(--f-mono); font-size: var(--step--1); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
-.facts dd { margin: 0; font-size: .98rem; line-height: 1.45; }
-.copy {
-  font: 500 .72rem/1 var(--f-mono); letter-spacing: .04em; color: var(--ink); background: transparent;
-  border: 1px solid var(--rule); border-radius: 99px; padding: .35rem .6rem; margin-top: .35rem; cursor: pointer; justify-self: start;
-}
-.copy:hover { border-color: var(--ink); }
-.prose { max-width: 64ch; display: grid; gap: 1.2rem; }
-.prose p { margin: 0; }
-.prose h2 { font-size: var(--step-2); letter-spacing: -.02em; line-height: 1.15; margin-top: 2rem; }
-.prose .big { font-size: var(--step-1); line-height: 1.5; }
-.principles { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.4rem; }
-.principles li { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); gap: .4rem 1rem; }
-.principles b { font-family: var(--f-display); font-weight: 600; font-size: var(--step-1); line-height: 1.25; grid-column: 2; }
-.principles span.n { font-family: var(--f-mono); font-size: var(--step--1); color: var(--ink-soft); padding-top: .3rem; grid-row: 1 / span 2; }
-.principles p { grid-column: 2; color: var(--ink-soft); }
-.timeline { list-style: none; margin: 0; padding: 0; border-top: 1.5px solid var(--ink); }
-.timeline li { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: .2rem 1.5rem; padding-block: 1rem; border-bottom: 1px solid var(--rule); }
-.timeline .mono { color: var(--ink-soft); padding-top: .2rem; }
+.about-hero { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 2rem 4rem; align-items: center; padding-block: clamp(3rem, 8vw, 5.5rem) 1rem; }
+.about-hero .copy { display: grid; gap: 1.2rem; justify-items: start; }
+.about-hero .avatar { width: min(100%, 320px); justify-self: center; }
+.stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; margin-top: 2rem; }
+.stat-grid div { background: var(--surface); padding: 1.3rem 1.4rem; display: grid; gap: .2rem; }
+.stat-grid b { font-family: var(--f-display); font-stretch: 118%; font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.4rem); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.stat-grid span { color: var(--muted); font-size: .86rem; }
+.two-col { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.25rem; margin-top: 1.25rem; }
+.panel { padding: clamp(1.4rem, 3vw, 2rem); border-radius: var(--r); background: var(--surface); border: 1px solid var(--line); display: grid; gap: 1rem; align-content: start; min-width: 0; }
+.panel h2 { font-size: var(--t-lg); letter-spacing: -.01em; font-stretch: 108%; }
+.panel p { color: var(--muted); }
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; }
+.timeline li { display: grid; grid-template-columns: 4.2rem minmax(0, 1fr); gap: 1rem; padding-block: .75rem; border-top: 1px solid var(--line); }
+.timeline li:first-child { border-top: 0; }
+.timeline .mono { color: var(--c-agents); padding-top: .25rem; }
 .timeline b { font-weight: 600; }
+.timeline .d { color: var(--muted); }
+.stackgrid { display: flex; flex-wrap: wrap; gap: .45rem; }
+.stackgrid span { padding: .4rem .7rem; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--line); font: 400 .8rem var(--f-mono); }
+.contact { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; }
+.contact code { font: 500 .95rem var(--f-mono); padding: .55rem .8rem; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--line); user-select: all; }
+.socials { display: flex; flex-wrap: wrap; gap: .5rem; }
+.socials a { padding: .5rem .85rem; border-radius: 99px; border: 1px solid var(--line-2); font-size: .86rem; display: inline-flex; gap: .5em; }
+.socials a b { font: 500 .72rem var(--f-mono); color: var(--faint); align-self: center; }
+.socials a:hover { background: var(--surface-2); }
 
 /* reading view */
-.article-head { padding-block: clamp(3rem, 8vw, 6rem) 2.5rem; display: grid; gap: 1.4rem; max-width: 900px; }
-.article-head h1 {
-  font-size: var(--step-4); font-weight: 600; letter-spacing: -.04em; line-height: 1;
-  font-variation-settings: "opsz" 96, "wdth" 85;
+.read-cover { margin-top: 1.5rem; aspect-ratio: 21 / 8; border-radius: 24px; }
+.read-cover svg { width: 20%; max-width: 200px; }
+.read-head { display: grid; gap: 1.1rem; padding-block: 2.2rem 2rem; max-width: 52rem; justify-items: start; }
+.read-head h1 { font-size: clamp(2.2rem, 1.3rem + 3.4vw, 4rem); line-height: 1.02; letter-spacing: -.035em; font-weight: 800; font-stretch: 118%; }
+.read-head .dek { font-size: var(--t-lg); color: var(--muted); max-width: 46ch; line-height: 1.5; }
+.back { color: var(--muted); font-size: var(--t-sm); display: inline-flex; gap: .4em; }
+.back:hover { color: var(--fg); }
+.read-body { max-width: 44rem; display: grid; gap: 1.3rem; font-size: 1.12rem; line-height: 1.75; padding-top: 2rem; border-top: 1px solid var(--line); }
+.read-body h2 { font-size: var(--t-xl); letter-spacing: -.02em; margin-top: 1.2rem; font-stretch: 108%; }
+.read-body pre { margin: 0; padding: 1.1rem 1.2rem; border-radius: 14px; background: var(--bg-2); border: 1px solid var(--line-2); overflow-x: auto; font: 400 .86rem/1.7 var(--f-mono); }
+.read-body blockquote {
+  margin: .5rem 0; padding: .2rem 0 .2rem 1.3rem; border-left: 3px solid var(--tc, var(--c-agents));
+  font-family: var(--f-display); font-stretch: 108%; font-weight: 600; font-size: var(--t-xl); line-height: 1.3; letter-spacing: -.015em;
 }
-.article-head .dek { margin: 0; font-size: var(--step-2); font-weight: 300; line-height: 1.3; color: var(--ink-soft); max-width: 36ch; font-variation-settings: "opsz" 48; }
-.article-head .byline { display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; color: var(--ink-soft); }
-.back { text-decoration: none; }
-.article-body { display: grid; grid-template-columns: minmax(0, 1fr) var(--margin-col); gap: 1.3rem clamp(2rem, 5vw, 5rem); max-width: 1000px; border-top: 1.5px solid var(--ink); padding-top: 2.5rem; }
-.article-body > * { grid-column: 1; margin: 0; max-width: 64ch; }
-.article-body > p:first-child::first-letter {
-  font-family: var(--f-display); font-weight: 700; font-variation-settings: "opsz" 96, "wdth" 75;
-  float: left; font-size: 4.6em; line-height: .8; padding: .08em .1em 0 0;
-}
-.article-body .note { grid-column: 2; grid-row: span 2; color: var(--ink-soft); border-left: 1.5px solid var(--ink); padding-left: .9rem; align-self: start; font-family: var(--f-mono); font-size: var(--step--1); line-height: 1.55; }
-.article-body blockquote {
-  font-family: var(--f-display); font-weight: 600; font-size: var(--step-2); line-height: 1.15; letter-spacing: -.02em;
-  font-variation-settings: "opsz" 60, "wdth" 85; padding-block: .6rem; max-width: 26ch;
-}
-.article-body h2 { font-size: var(--step-1); margin-top: 1rem; }
-.placeholder { font-family: var(--f-mono); font-size: var(--step--1); color: var(--ink-soft); background: var(--paper-2); padding: 1rem 1.1rem; }
+.callout { padding: 1rem 1.2rem; border-radius: 14px; background: color-mix(in oklab, var(--tc, var(--c-agents)) 10%, var(--surface)); border: 1px solid color-mix(in oklab, var(--tc, var(--c-agents)) 30%, transparent); font-size: .98rem; }
+.placeholder { padding: 1.2rem; border-radius: 14px; border: 1px dashed var(--line-2); color: var(--muted); font: 400 .85rem/1.6 var(--f-mono); }
 
-/* ───────── footer ───────── */
-.letter {
-  margin-top: clamp(5rem, 11vw, 9rem);
-  background: var(--ink); color: var(--paper);
-}
-.letter .frame { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 2rem 4rem; padding-block: clamp(3rem, 7vw, 5rem); align-items: end; }
-.letter h2 { font-size: var(--step-3); font-weight: 300; letter-spacing: -.035em; line-height: 1.02; font-variation-settings: "opsz" 96, "wdth" 85; }
-.letter h2 b { font-weight: 700; }
-.letter p { margin: .8rem 0 0; opacity: .78; max-width: 44ch; }
-.letter form { display: grid; gap: .6rem; }
-.letter label { font-family: var(--f-mono); font-size: var(--step--1); letter-spacing: .08em; text-transform: uppercase; opacity: .78; }
-.letter .row { display: flex; border-bottom: 1.5px solid var(--paper); }
-.letter input {
-  flex: 1; min-width: 0; background: transparent; border: 0; color: var(--paper); font: 400 var(--step-1) var(--f-body);
-  padding: .6rem 0; outline: none;
-}
-.letter input::placeholder { color: var(--paper); opacity: .5; }
-.letter button[type="submit"] {
-  background: transparent; border: 0; color: var(--paper); font: 500 .85rem var(--f-mono); letter-spacing: .04em; cursor: pointer; padding: .6rem 0 .6rem 1rem;
-}
-.letter .status { min-height: 1.5em; font-family: var(--f-mono); font-size: var(--step--1); opacity: .9; }
-.letter :focus-visible { outline-color: var(--paper); }
+/* footer */
+.footer { margin-top: clamp(4rem, 9vw, 7rem); border-top: 1px solid var(--line); }
+.footer .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem 2rem; padding-block: 1.6rem 2.4rem; color: var(--faint); font-size: .84rem; }
+.footer .nav { margin: 0; }
 
-.colophon {
-  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem 2rem; align-items: center;
-  padding-block: 1.6rem 2.2rem; color: var(--ink-soft);
-}
-.colophon .nav a { color: var(--ink); }
+/* view entrance */
+[data-view] { animation: rise .55s cubic-bezier(.2, .7, .2, 1); }
+@keyframes rise { from { transform: translateY(12px); opacity: .4; } }
 
-/* ───────── Simplified Chinese ─────────
-   CJK needs no negative tracking, taller lines, and no condensed widths. */
-:root:lang(zh) body { line-height: 1.85; }
-:root:lang(zh) :is(h1, h2, h3, blockquote, .wordmark) { letter-spacing: .02em; }
-:root:lang(zh) .thesis { line-height: 1.3; max-width: 12.5em; font-weight: 300; }
-:root:lang(zh) .thesis .mark { font-weight: 700; }
-:root:lang(zh) :is(.entry h3, .page-head h1, .article-head h1) { line-height: 1.3; }
-:root:lang(zh) .page-head h1 { font-weight: 700; }
-:root:lang(zh) .entry:hover h3 { font-weight: 700; }
-:root:lang(zh) .res .cover b { font-size: clamp(2.6rem, 5.5vw, 4.4rem); letter-spacing: .02em; }
-:root:lang(zh) :is(.eyebrow, .facts dt, .letter label) { letter-spacing: .12em; }
-:root:lang(zh) .article-body > p:first-child::first-letter { font-size: 3.2em; line-height: 1; padding-right: .12em; }
-:root:lang(zh) .article-body blockquote { line-height: 1.45; }
-
-/* view transitions */
-[data-view] { animation: enter .5s cubic-bezier(.2, .7, .2, 1); }
-@keyframes enter { from { transform: translateY(10px); } }
+/* ───────── Simplified Chinese ───────── */
+:root:lang(zh) body { line-height: 1.8; }
+:root:lang(zh) :is(h1, h2, h3) { letter-spacing: .01em; }
+:root:lang(zh) :is(.headline, .page-head h1) { letter-spacing: .01em; line-height: 1.12; font-weight: 900; }
+:root:lang(zh) :is(.section-head h2, .letter h2, .read-head h1) { line-height: 1.25; }
+:root:lang(zh) .read-body { line-height: 1.95; }
+:root:lang(zh) .kicker { letter-spacing: .2em; }
 
 /* ───────── responsive ───────── */
-@media (max-width: 900px) {
-  :root { --margin-col: 1fr; }
-  .section, .page-head, .year-group, .about-grid, .filter-row { grid-template-columns: minmax(0, 1fr); }
-  .filters { grid-column: 1; }
-  .section > aside, .facts { position: static; }
-  .page-head .lede { grid-column: 1; }
-  .shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .about-teaser, .letter .frame { grid-template-columns: minmax(0, 1fr); }
-  .portrait { max-width: 420px; }
-  .article-body { grid-template-columns: minmax(0, 1fr); }
-  .article-body .note { grid-column: 1; grid-row: auto; }
-  .year-group > h2 { padding-block: 0 .8rem; }
+@media (max-width: 980px) {
+  .hero .wrap, .res-layout, .letter-inner, .about-hero, .two-col { grid-template-columns: minmax(0, 1fr); }
+  .map { max-width: 520px; width: 100%; justify-self: center; }
+  .bento { grid-template-columns: minmax(0, 1fr); }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .about-hero .avatar { order: -1; width: 180px; justify-self: start; }
 }
 @media (max-width: 640px) {
-  .ledger { grid-template-columns: minmax(0, 1fr); gap: 1.6rem; }
-  .entry { grid-template-columns: minmax(0, 1fr); }
-  .entry .dek, .readtime { grid-column: 1; grid-row: auto; }
-  .readtime { justify-items: start; grid-template-columns: auto 5rem; align-items: center; gap: .8rem; }
-  .shelf { grid-template-columns: minmax(0, 1fr); }
-  .timeline li { grid-template-columns: minmax(0, 1fr); }
+  .topbar .wrap { gap: .4rem .8rem; }
+  .topbar nav { order: 3; width: 100%; margin: 0; }
+  .topbar .nav { justify-content: space-between; }
+  .nav a { padding: .45rem .6rem; }
+  .tools { margin-left: auto; }
+  .tools .btn { display: none; }
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .mini { grid-template-columns: 96px minmax(0, 1fr); }
+  .about-card { grid-template-columns: minmax(0, 1fr); }
+  .read-cover { aspect-ratio: 16 / 9; }
+  .stats { gap: 1rem 1.6rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
-  .thesis .mark span { background-size: 100% .3em; }
+  html { scroll-behavior: auto; }
 }
 </style>
 </head>
 <body>
 <!--
-  Translation: English text lives in the markup. Every element with data-i18n="key" has a
-  Simplified Chinese counterpart in UI.zh in the script below. Articles and resources carry
-  both languages in their data objects.
+  Editing: English text lives in this markup. Every element with data-i18n="key" has a
+  Simplified Chinese counterpart in UI.zh in the script. Articles and resources carry both
+  languages in their data objects. Audience figures use data-i18n keys starting "stat.".
 -->
 
-<div class="frame">
-  <header class="masthead">
-    <a class="wordmark" href="#home" data-i18n-attr="aria-label:wordmark.label" aria-label="Theo Lindqvist, home" data-i18n="wordmark">Theo <span>Lindqvist</span></a>
-    <div class="masthead-right">
-      <nav aria-label="Main" data-i18n-attr="aria-label:nav.label">
-        <ul class="nav">
-          <li><a href="#resources" data-nav="resources"><span data-i18n="nav.resources">Resources</span><sup data-count="resources"></sup></a></li>
-          <li><a href="#articles" data-nav="articles"><span data-i18n="nav.articles">Articles</span><sup data-count="articles"></sup></a></li>
-          <li><a href="#about" data-nav="about"><span data-i18n="nav.about">About</span></a></li>
-        </ul>
-      </nav>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#home" aria-label="Kai Chen, home"><span class="orb" aria-hidden="true"></span>Kai Chen</a>
+    <nav aria-label="Main" data-i18n-attr="aria-label:nav.label">
+      <ul class="nav">
+        <li><a href="#resources" data-nav="resources"><span data-i18n="nav.resources">Resources</span><sup data-count="resources"></sup></a></li>
+        <li><a href="#articles" data-nav="articles"><span data-i18n="nav.articles">Articles</span><sup data-count="articles"></sup></a></li>
+        <li><a href="#about" data-nav="about"><span data-i18n="nav.about">About</span></a></li>
+      </ul>
+    </nav>
+    <div class="tools">
       <div class="seg" role="group" aria-label="Language / 语言">
         <button type="button" data-lang-set="en" lang="en" aria-pressed="true">EN</button>
-        <button type="button" data-lang-set="zh-Hans" lang="zh-Hans" aria-pressed="false">中文</button>
+        <button type="button" data-lang-set="zh" lang="zh-Hans" aria-pressed="false">中文</button>
+      </div>
+      <button class="btn btn-primary btn-sm" type="button" data-subscribe data-i18n="nav.subscribe">Subscribe</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ═════════════════════ HOME ═════════════════════ -->
+<div data-view="home">
+  <section class="hero" aria-labelledby="headline">
+    <div class="wrap">
+      <div class="hero-copy">
+        <a class="pill" id="latest-pill" href="#articles"><span class="new" data-i18n="hero.new">New</span><span class="t" id="latest-pill-title"></span><span class="arrow" aria-hidden="true">→</span></a>
+        <h1 class="headline" id="headline" data-i18n="hero.title">Making AI <span class="grad">make sense.</span></h1>
+        <p class="sub" data-i18n="hero.sub">I'm Kai. I test new models, build real things with the tools, and explain what's worth your time. <b>Every week, for 240,000 developers and builders.</b></p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#articles"><span data-i18n="hero.cta1">Start reading</span> <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="#resources" data-i18n="hero.cta2">Free resources</a>
+        </div>
+        <div class="stats">
+          <div><b data-i18n="stat.yt">240K</b><span data-i18n="stat.ytL">YouTube subscribers</span></div>
+          <div><b data-i18n="stat.nl">86K</b><span data-i18n="stat.nlL">Newsletter readers</span></div>
+          <div><b data-i18n="stat.views">3.1M</b><span data-i18n="stat.viewsL">Monthly views</span></div>
+        </div>
+      </div>
+
+      <figure class="map">
+        <div class="map-frame" id="map-frame">
+          <canvas id="cloud" role="img" data-i18n-attr="aria-label:map.aria" aria-label="A 3D map of every article and resource, grouped into four topic clusters"></canvas>
+          <div class="map-hud mono" aria-hidden="true"><span>latent_space.view</span><span id="hud-count"></span></div>
+          <div class="tip" id="tip" hidden></div>
+        </div>
+        <div class="legend" id="legend" role="group" data-i18n-attr="aria-label:map.legend" aria-label="Highlight a topic"></div>
+        <figcaption class="map-caption mono" data-i18n="map.caption">Each point is something I've published, grouped by topic. Drag to rotate.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section wrap" aria-labelledby="h-latest">
+    <div class="section-head">
+      <div>
+        <span class="kicker" data-i18n="home.latestK">Latest articles</span>
+        <h2 id="h-latest" data-i18n="home.latest">Fresh from the lab</h2>
+      </div>
+      <a class="link" href="#articles"><span data-i18n="home.allArticles">All articles</span> <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+    <div class="bento" id="bento"></div>
+  </section>
+
+  <section class="section wrap" aria-labelledby="h-res">
+    <div class="section-head">
+      <div>
+        <span class="kicker" data-i18n="nav.resources">Resources</span>
+        <h2 id="h-res" data-i18n="home.res">Steal my toolkit</h2>
+        <p data-i18n="home.resText">Prompts, starter repos and templates I use every day. Most are free.</p>
+      </div>
+      <a class="link" href="#resources"><span data-i18n="home.allRes">All resources</span> <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+    <div class="res-layout">
+      <a class="window" href="#resources" aria-labelledby="pp-title">
+        <div class="window-bar"><i></i><i></i><i></i><span class="mono">code-review.prompt.md</span></div>
+<pre><span class="c"># From the Developer Prompt Pack · 120 prompts</span>
+<span class="k">role</span>: <span class="s">senior code reviewer</span>
+<span class="k">context</span>: <span class="p">{{diff}}</span>, <span class="p">{{style_guide}}</span>
+
+<span class="k">task</span>:
+  Review the diff. Flag only issues that would
+  cause a <span class="n">bug</span>, a <span class="n">security hole</span>, or a <span class="n">failing test</span>.
+
+<span class="k">output</span>:
+  - file:line → problem → one-line fix
+  - max <span class="n">5</span> items, most severe first
+  - if nothing qualifies, reply <span class="s">"LGTM"</span><span class="caret"></span></pre>
+        <div class="window-foot">
+          <div><b id="pp-title" data-i18n="home.ppTitle">Developer Prompt Pack</b><p data-i18n="home.ppText">120 tested prompts for code, docs and debugging.</p></div>
+          <span class="btn btn-primary btn-sm"><span data-i18n="home.ppCta">Get it free</span> <span class="arrow" aria-hidden="true">→</span></span>
+        </div>
+      </a>
+      <ul class="res-list" id="res-list"></ul>
+    </div>
+  </section>
+
+  <section class="section wrap" aria-labelledby="h-about">
+    <div class="about-card">
+      <div class="avatar" aria-hidden="true"><div><span>KC</span><!-- Replace with <img src="kai.jpg" alt=""> --></div></div>
+      <div class="text">
+        <span class="kicker" data-i18n="nav.about">About</span>
+        <h2 id="h-about" data-i18n="home.aboutTitle">Former ML engineer. Now I explain AI full-time, with working code.</h2>
+        <p data-i18n="home.aboutText">I spent six years shipping machine learning systems before I started making videos about them. Everything I publish is something I've built and tested myself.</p>
+        <div class="topic-chips" id="topic-chips"></div>
+        <a class="link" href="#about"><span data-i18n="home.aboutMore">More about me</span> <span class="arrow" aria-hidden="true">→</span></a>
       </div>
     </div>
-  </header>
+  </section>
 </div>
 
-<main id="main">
-
-  <!-- ═════════════ HOME ═════════════ -->
-  <div data-view="home" class="frame">
-    <section class="hero" aria-labelledby="thesis">
-      <div class="hero-meta mono">
-        <span data-i18n="meta.role">Independent product designer</span>
-        <span data-i18n="meta.place">Stockholm · 59.33° N, 18.07° E</span>
-        <span class="live" id="clock">--:-- local time</span>
-      </div>
-
-      <h1 class="thesis" id="thesis" data-i18n="thesis">
-        <a class="mark" href="#about" style="--i:0"><span>I design quiet software</span></a>
-        for people who think for a living. I
-        <a class="mark" href="#articles" style="--i:1"><span>write about the craft</span></a>
-        and
-        <a class="mark" href="#resources" style="--i:2"><span>give away the tools I&nbsp;use</span></a>.
-      </h1>
-
-      <div class="ledger">
-        <a id="latest-link" href="#articles">
-          <p class="eyebrow" data-i18n="ledger.latest">Latest article</p>
-          <h3 id="latest-title"></h3>
-          <p id="latest-meta" class="mono"></p>
-        </a>
-        <a href="#resources">
-          <p class="eyebrow" data-i18n="ledger.shelf">New on the shelf</p>
-          <h3 id="newest-title"></h3>
-          <p id="newest-meta" class="mono"></p>
-        </a>
-        <div>
-          <p class="eyebrow" data-i18n="ledger.now">Now</p>
-          <h3 data-i18n="ledger.nowTitle">Designing offline mode for a field-research app</h3>
-          <p class="mono" data-i18n="ledger.nowMeta">Booking projects from Feb 2027</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" aria-labelledby="h-writing">
-      <aside>
-        <p class="eyebrow" data-i18n="nav.articles">Articles</p>
-        <h2 id="h-writing" data-i18n="home.writing">Recent writing</h2>
-        <p data-i18n="home.writingText">Essays on interface craft, design systems, and the habits that keep small teams shipping.</p>
-        <a class="more" href="#articles" data-i18n="home.writingMore">All articles</a>
-      </aside>
-      <ol class="index" id="home-articles"></ol>
-    </section>
-
-    <section class="section" aria-labelledby="h-shelf">
-      <aside>
-        <p class="eyebrow" data-i18n="nav.resources">Resources</p>
-        <h2 id="h-shelf" data-i18n="home.shelf">The shelf</h2>
-        <p data-i18n="home.shelfText">Templates, kits, and checklists from real client work. Most are free.</p>
-        <a class="more" href="#resources" data-i18n="home.shelfMore">Browse resources</a>
-      </aside>
-      <div class="shelf" id="home-resources"></div>
-    </section>
-
-    <section class="section" aria-labelledby="h-about">
-      <aside>
-        <p class="eyebrow" data-i18n="nav.about">About</p>
-        <h2 id="h-about" data-i18n="home.about">Who's writing</h2>
-        <a class="more" href="#about" data-i18n="home.aboutMore">Full story</a>
-      </aside>
-      <div class="about-teaser">
-        <figure class="portrait">
-          <!-- Replace with <img src="portrait.jpg" alt="Theo Lindqvist"> -->
-          <span class="initials" aria-hidden="true">TL</span>
-          <figcaption class="note mono" data-i18n="home.portrait">Portrait placeholder</figcaption>
-        </figure>
-        <div class="body">
-          <blockquote data-i18n="home.quote">Good software should feel like a well-made pencil: <em>you notice the work, not the tool.</em></blockquote>
-          <p data-i18n="home.aboutText">I've spent twelve years designing tools for researchers, editors, and analysts. These days I work with two or three teams a year and write about what I learn.</p>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- ═════════════ ARTICLES ═════════════ -->
-  <div data-view="articles" class="frame" hidden>
+<!-- ═════════════════════ ARTICLES ═════════════════════ -->
+<div data-view="articles" hidden>
+  <div class="wrap">
     <header class="page-head">
-      <p class="eyebrow" data-i18n="articles.eyebrow">Index</p>
+      <span class="kicker" data-i18n="articles.k">Writing</span>
       <h1><span data-i18n="nav.articles">Articles</span><sup data-count="articles"></sup></h1>
-      <p class="lede" data-i18n="articles.lede">Essays on interface craft, design systems, and working practice. Published about once a month.</p>
+      <p data-i18n="articles.lede">Hands-on breakdowns of models, agents and developer tools. Every claim tested, every demo runnable.</p>
     </header>
-    <div class="filter-row">
-      <div class="filters" role="group" id="article-filters" data-i18n-attr="aria-label:filter.topic" aria-label="Filter by topic"></div>
+    <div class="toolbar">
+      <div class="chips" id="article-chips" role="group" data-i18n-attr="aria-label:filter.topic" aria-label="Filter by topic"></div>
+      <label class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="article-search" type="search" placeholder="Search articles" data-i18n-attr="placeholder:search.ph" aria-label="Search articles">
+      </label>
     </div>
-    <div id="article-years"></div>
+    <div class="grid" id="article-grid"></div>
   </div>
+</div>
 
-  <!-- ═════════════ RESOURCES ═════════════ -->
-  <div data-view="resources" class="frame" hidden>
+<!-- ═════════════════════ RESOURCES ═════════════════════ -->
+<div data-view="resources" hidden>
+  <div class="wrap">
     <header class="page-head">
-      <p class="eyebrow" data-i18n="resources.eyebrow">Shelf</p>
+      <span class="kicker" data-i18n="resources.k">Toolkit</span>
       <h1><span data-i18n="nav.resources">Resources</span><sup data-count="resources"></sup></h1>
-      <p class="lede" data-i18n="resources.lede">The templates and kits I use with clients, cleaned up so you can use them too. Free unless marked.</p>
+      <p data-i18n="resources.lede">The prompts, repos, templates and courses behind my videos. Free unless marked.</p>
     </header>
-    <div class="filter-row flush">
-      <div class="filters" role="group" id="resource-filters" data-i18n-attr="aria-label:filter.type" aria-label="Filter by type"></div>
+    <div class="toolbar">
+      <div class="chips" id="resource-chips" role="group" data-i18n-attr="aria-label:filter.type" aria-label="Filter by type"></div>
     </div>
-    <div class="shelf" id="all-resources"></div>
+    <div class="grid" id="resource-grid"></div>
   </div>
+</div>
 
-  <!-- ═════════════ ABOUT ═════════════ -->
-  <div data-view="about" class="frame" hidden>
-    <header class="page-head">
-      <p class="eyebrow" data-i18n="nav.about">About</p>
-      <h1 data-i18n="about.name">Theo Lindqvist</h1>
-      <p class="lede" data-i18n="about.lede">Independent product designer. I help small teams build calm, durable tools for focused work.</p>
-    </header>
-    <div class="about-grid">
-      <dl class="facts">
-        <div><dt data-i18n="facts.based">Based in</dt><dd data-i18n="facts.basedV">Stockholm, Sweden</dd></div>
-        <div><dt data-i18n="facts.focus">Focus</dt><dd data-i18n="facts.focusV">Research tools, editors, internal software</dd></div>
-        <div><dt data-i18n="facts.prev">Previously</dt><dd data-i18n="facts.prevV">Design lead at a note-taking startup; 6 years in agency work</dd></div>
-        <div><dt data-i18n="facts.avail">Availability</dt><dd data-i18n="facts.availV">Booking from February 2027</dd></div>
-        <div><dt data-i18n="facts.contact">Contact</dt><dd><span id="email">hello@theolindqvist.com</span></dd><button class="copy" type="button" data-copy="email" data-i18n="facts.copy">Copy email</button></div>
-      </dl>
-      <div class="prose">
-        <p class="big" data-i18n="about.p1">I design software for people whose work is mostly thinking: researchers, editors, analysts, and the teams that support them. My aim is always the same. The tool should get quieter the longer you use it.</p>
-        <p data-i18n="about.p2">I started in agency work, shipping marketing sites on deadlines that left no room to ask whether anyone needed them. Then I spent four years as design lead at a small note-taking company, where I learned how much a product's defaults shape the way people think. Since 2023 I've worked independently with two or three teams a year.</p>
-        <p data-i18n="about.p3">Alongside client work, I write essays about the craft and publish the templates I actually use. If something here helped you, I'd like to hear about it.</p>
-
-        <h2 data-i18n="about.how">How I work</h2>
-        <ol class="principles">
-          <li><span class="n">i.</span><b data-i18n="pr.1">Start with the tenth session.</b><p data-i18n="pr.1t">First impressions matter less than the hundredth use. I design for the person who already knows the product.</p></li>
-          <li><span class="n">ii.</span><b data-i18n="pr.2">Write before drawing.</b><p data-i18n="pr.2t">Every project begins with a one-page brief. If it can't be written plainly, it isn't ready to be designed.</p></li>
-          <li><span class="n">iii.</span><b data-i18n="pr.3">Small teams, long engagements.</b><p data-i18n="pr.3t">I work embedded for three to six months, alongside the engineers who'll maintain the result.</p></li>
-        </ol>
-
-        <h2 data-i18n="about.timeline">Timeline</h2>
-        <ol class="timeline">
-          <li><span class="mono" data-i18n="tl.1y">2023 – now</span><div data-i18n="tl.1"><b>Independent practice.</b> Clients in research, publishing, and climate data.</div></li>
-          <li><span class="mono">2019 – 2023</span><div data-i18n="tl.2"><b>Design lead, note-taking startup.</b> Grew the design team from one to five.</div></li>
-          <li><span class="mono">2014 – 2019</span><div data-i18n="tl.3"><b>Designer at two studios</b> in Gothenburg and Copenhagen.</div></li>
-        </ol>
-
-        <h2 data-i18n="about.elsewhere">Elsewhere</h2>
-        <p class="mono">
-          <a href="https://example.com">Read.cv</a> · <a href="https://example.com">LinkedIn</a> · <a href="https://example.com">Bluesky</a> · <a href="https://example.com">RSS</a>
-        </p>
+<!-- ═════════════════════ ABOUT ═════════════════════ -->
+<div data-view="about" hidden>
+  <div class="wrap">
+    <section class="about-hero">
+      <div class="copy">
+        <span class="kicker" data-i18n="nav.about">About</span>
+        <h1 class="headline" data-i18n="about.title">Hi, I'm <span class="grad">Kai.</span></h1>
+        <p class="sub" data-i18n="about.lede">I make AI understandable for people who build things. Videos, a weekly newsletter, and open-source starter kits.</p>
+        <div class="cta-row">
+          <button class="btn btn-primary" type="button" data-subscribe><span data-i18n="nav.subscribe">Subscribe</span> <span class="arrow" aria-hidden="true">→</span></button>
+          <button class="btn btn-ghost" type="button" data-scroll="about-work" data-i18n="about.workCta">Work with me</button>
+        </div>
       </div>
+      <div class="avatar" aria-hidden="true"><div><span>KC</span></div></div>
+    </section>
+
+    <div class="stat-grid">
+      <div><b data-i18n="stat.yt">240K</b><span data-i18n="stat.ytL">YouTube subscribers</span></div>
+      <div><b data-i18n="stat.nl">86K</b><span data-i18n="stat.nlL">Newsletter readers</span></div>
+      <div><b data-i18n="stat.x">120K</b><span data-i18n="stat.xL">Followers on X</span></div>
+      <div><b data-i18n="stat.bili">58K</b><span data-i18n="stat.biliL">Followers on Bilibili</span></div>
+    </div>
+
+    <div class="two-col">
+      <section class="panel">
+        <h2 data-i18n="about.storyT">The short version</h2>
+        <p data-i18n="about.p1">I started as a machine learning engineer, building search and recommendation systems at two startups. In 2022 I began recording videos explaining the papers I was reading at work, mostly for my own understanding.</p>
+        <p data-i18n="about.p2">People kept asking for the code. So now every video comes with a runnable repo, and every article with a demo. I've been doing this full-time since 2024.</p>
+        <p data-i18n="about.p3">My rule is simple: if I haven't built it, I don't explain it.</p>
+      </section>
+      <section class="panel">
+        <h2 data-i18n="about.timelineT">Timeline</h2>
+        <ol class="timeline">
+          <li><span class="mono">2026</span><div><b data-i18n="tl.1">240K subscribers</b> · <span class="d" data-i18n="tl.1d">launched the Shipping with LLMs course</span></div></li>
+          <li><span class="mono">2024</span><div><b data-i18n="tl.2">Went full-time</b> · <span class="d" data-i18n="tl.2d">started the weekly newsletter</span></div></li>
+          <li><span class="mono">2022</span><div><b data-i18n="tl.3">First video</b> · <span class="d" data-i18n="tl.3d">"Attention, explained with code"</span></div></li>
+          <li><span class="mono">2016</span><div><b data-i18n="tl.4">ML engineer</b> · <span class="d" data-i18n="tl.4d">search and recommendations at two startups</span></div></li>
+        </ol>
+      </section>
+      <section class="panel">
+        <h2 data-i18n="about.stackT">What I use</h2>
+        <div class="stackgrid">
+          <span>Python</span><span>TypeScript</span><span>PyTorch</span><span>Next.js</span><span>Postgres + pgvector</span><span>Docker</span><span>Jupyter</span><span>VS Code</span><span>Final Cut Pro</span><span>Notion</span>
+        </div>
+      </section>
+      <section class="panel" id="about-work">
+        <h2 data-i18n="about.workT">Work with me</h2>
+        <p data-i18n="about.workP">I partner with a small number of developer-tool and AI companies each quarter on sponsored videos and newsletter features. I only cover products I'd use myself.</p>
+        <div class="contact">
+          <code id="email">hello@kaichen.dev</code>
+          <button class="btn btn-ghost btn-sm" type="button" data-copy="email" data-i18n="about.copy">Copy email</button>
+        </div>
+        <div class="socials">
+          <a href="https://example.com">YouTube <b>240K</b></a>
+          <a href="https://example.com">X <b>120K</b></a>
+          <a href="https://example.com">Bilibili <b>58K</b></a>
+          <a href="https://example.com">GitHub <b>9.4K</b></a>
+        </div>
+      </section>
     </div>
   </div>
+</div>
 
-  <!-- ═════════════ READING VIEW ═════════════ -->
-  <article data-view="read" class="frame" hidden>
-    <header class="article-head">
-      <p class="eyebrow"><a class="back" href="#articles" data-i18n="read.back">← Articles</a> · <span id="read-topic"></span></p>
+<!-- ═════════════════════ READING VIEW ═════════════════════ -->
+<article data-view="read" hidden>
+  <div class="wrap" id="read-wrap">
+    <div class="cover read-cover" id="read-cover"></div>
+    <header class="read-head">
+      <a class="back" href="#articles"><span aria-hidden="true">←</span><span data-i18n="read.back">All articles</span></a>
+      <span class="tag" id="read-tag"></span>
       <h1 id="read-title"></h1>
       <p class="dek" id="read-dek"></p>
-      <p class="byline mono" id="read-byline"></p>
+      <div class="meta" id="read-meta"></div>
     </header>
-    <div class="article-body" id="read-body"></div>
-  </article>
+    <div class="read-body" id="read-body"></div>
+  </div>
+</article>
+
+<!-- ═════════════════════ NEWSLETTER (all pages) ═════════════════════ -->
+<section class="section wrap" id="newsletter" aria-labelledby="h-letter">
+  <div class="letter">
+    <div class="letter-inner">
+      <div class="text">
+        <span class="kicker" data-i18n="letter.k">Newsletter</span>
+        <h2 id="h-letter" data-i18n="letter.title">The 5-minute AI brief</h2>
+        <p data-i18n="letter.text">Every Thursday: what shipped, what's hype, and one thing worth building. Join 86,000 readers.</p>
+      </div>
+      <!-- Wire this form to your newsletter provider (Beehiiv, Buttondown, ConvertKit …). -->
+      <form id="letter-form" novalidate>
+        <div class="field">
+          <input id="letter-email" name="email" type="email" placeholder="you@company.com" autocomplete="email" required data-i18n-attr="aria-label:letter.label" aria-label="Email address">
+          <button class="btn btn-primary" type="submit" data-i18n="letter.submit">Subscribe</button>
+        </div>
+        <p class="status" id="letter-status" aria-live="polite"></p>
+        <p class="fine" data-i18n="letter.fine">Free. No spam. Unsubscribe in one click.</p>
+      </form>
+    </div>
+  </div>
+</section>
 
 </main>
 
-<footer>
-  <section class="letter" aria-labelledby="h-letter">
-    <div class="frame">
-      <div>
-        <h2 id="h-letter" data-i18n="letter.title">One letter <b>a month.</b></h2>
-        <p data-i18n="letter.text">New essays and resources as they're published. No tracking pixels, and you can unsubscribe in one click.</p>
-      </div>
-      <!-- Wire this form to your newsletter provider (Buttondown, ConvertKit, etc.). -->
-      <form id="letter-form" novalidate>
-        <label for="letter-email" data-i18n="letter.label">Email address</label>
-        <div class="row">
-          <input id="letter-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>
-          <button type="submit" data-i18n="letter.submit">Subscribe →</button>
-        </div>
-        <p class="status" id="letter-status" aria-live="polite"></p>
-      </form>
-    </div>
-  </section>
-  <div class="frame colophon mono">
-    <span data-i18n="colophon">© 2026 Theo Lindqvist · Set in Bricolage Grotesque, Newsreader &amp; IBM Plex Mono</span>
+<footer class="footer">
+  <div class="wrap">
+    <span>© 2026 Kai Chen</span>
     <ul class="nav">
       <li><a href="#resources" data-i18n="nav.resources">Resources</a></li>
       <li><a href="#articles" data-i18n="nav.articles">Articles</a></li>
       <li><a href="#about" data-i18n="nav.about">About</a></li>
     </ul>
     <div class="seg" role="group" data-i18n-attr="aria-label:theme.label" aria-label="Colour theme">
-      <button type="button" data-theme-set="light" aria-pressed="false" data-i18n="theme.light">Ink</button>
+      <button type="button" data-theme-set="dark" aria-pressed="false" data-i18n="theme.dark">Dark</button>
       <button type="button" data-theme-set="system" aria-pressed="true" data-i18n="theme.auto">Auto</button>
-      <button type="button" data-theme-set="dark" aria-pressed="false" data-i18n="theme.dark">Cyanotype</button>
+      <button type="button" data-theme-set="light" aria-pressed="false" data-i18n="theme.light">Light</button>
     </div>
   </div>
 </footer>
@@ -623,178 +755,181 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; font-
 /* ════════════════════════════════════════════════════════════════
    CONTENT. Edit these to update the site. Each item has `en` and `zh`.
    ════════════════════════════════════════════════════════════════ */
+const TOPICS = {
+  agents:    { en: "Agents",    zh: "智能体" },
+  models:    { en: "Models",    zh: "模型" },
+  tools:     { en: "Tools",     zh: "工具" },
+  tutorials: { en: "Tutorials", zh: "教程" },
+};
+
 const ARTICLES = [
-  { slug: "on-defaults", topic: "craft", date: "2026-10-21", mins: 11,
-    en: { title: "What a good default is worth", dek: "Most people never open settings. The choice you make for them is the product." },
-    zh: { title: "一个好的默认值价值几何", dek: "大多数人从不打开设置。你替他们做的选择，就是产品本身。" } },
-  { slug: "second-visit", topic: "craft", date: "2026-09-30", mins: 8,
-    en: { title: "Designing for the second visit", dek: "First-run flows get the attention. The tenth session decides whether anyone stays." },
-    zh: { title: "为第二次访问而设计", dek: "首次引导总是备受关注，但决定用户是否留下的，是第十次使用。" } },
-  { slug: "boring-interfaces", topic: "practice", date: "2026-08-14", mins: 9,
-    en: { title: "In defence of boring interfaces", dek: "Novelty costs attention. Spend it where the work actually is." },
-    zh: { title: "为平淡的界面辩护", dek: "新奇会消耗注意力。把它花在真正的工作上。" } },
-  { slug: "design-brief", topic: "writing", date: "2026-06-02", mins: 6,
-    en: { title: "The one-page design brief", dek: "The template I've used on every project since 2021, and why each section exists." },
-    zh: { title: "一页纸设计简报", dek: "自 2021 年起我在每个项目中使用的模板，以及每个部分存在的理由。" } },
-  { slug: "empty-states", topic: "systems", date: "2026-03-19", mins: 7,
-    en: { title: "Empty states are onboarding", dek: "The screen with nothing on it teaches more than any tour." },
-    zh: { title: "空状态就是新手引导", dek: "一个空无一物的屏幕，比任何产品导览教得更多。" } },
-  { slug: "naming-tokens", topic: "systems", date: "2025-12-08", mins: 13,
-    en: { title: "Naming design tokens so people use them", dek: "A naming scheme is an interface. Engineers are its users." },
-    zh: { title: "让人愿意使用的设计令牌命名", dek: "命名方案也是一种界面，工程师就是它的用户。" } },
-  { slug: "critique", topic: "practice", date: "2025-10-27", mins: 10,
-    en: { title: "How to run a critique that ends on time", dek: "Forty-five minutes, three roles, one decision." },
-    zh: { title: "如何主持一场准时结束的设计评审", dek: "四十五分钟，三个角色，一个决定。" } },
-  { slug: "changelogs", topic: "writing", date: "2025-07-15", mins: 5,
-    en: { title: "Changelogs are a writing problem", dek: "Release notes are the only docs most users read. Write them like it." },
-    zh: { title: "更新日志是一个写作问题", dek: "发布说明是大多数用户唯一会读的文档。请认真写好它。" } },
-  { slug: "perceived-speed", topic: "craft", date: "2025-04-03", mins: 12,
-    en: { title: "Perceived speed is a design material", dek: "What users feel as fast has little to do with milliseconds." },
-    zh: { title: "感知速度是一种设计材料", dek: "用户感受到的快，与毫秒数关系不大。" } },
-  { slug: "teams-of-three", topic: "systems", date: "2024-11-11", mins: 15,
-    en: { title: "Design systems for teams of three", dek: "You don't need a platform team. You need twelve components and a shared vocabulary." },
-    zh: { title: "三人团队的设计系统", dek: "你不需要平台团队。你需要十二个组件和一套共同的语言。" } },
+  { slug: "agents-that-dont-break", topic: "agents", date: "2026-10-28", mins: 14,
+    en: { title: "Agents that don't break: a field guide to tool calling", dek: "Most agent failures aren't model failures. They're missing timeouts, vague tool descriptions and no step limit." },
+    zh: { title: "不会崩溃的智能体：工具调用实战指南", dek: "大多数智能体故障并不是模型的问题，而是缺少超时、工具描述含糊、没有步数上限。" } },
+  { slug: "dev-stack-2026", topic: "tools", date: "2026-10-14", mins: 11,
+    en: { title: "My 2026 AI dev stack, ranked by hours saved", dek: "Twelve tools, three months of time tracking, and the four I'd actually pay for." },
+    zh: { title: "我的 2026 AI 开发工具栈：按节省时长排名", dek: "十二款工具，三个月的时间记录，以及我真正愿意付费的四款。" } },
+  { slug: "rag-in-an-afternoon", topic: "tutorials", date: "2026-09-30", mins: 18,
+    en: { title: "Build a RAG app in an afternoon, then make it good", dek: "The demo takes an hour. Chunking, reranking and evals take the rest of the week." },
+    zh: { title: "一个下午搭建 RAG 应用，然后把它做好", dek: "演示只需一小时，分块、重排和评测却要花掉一整周。" } },
+  { slug: "reading-model-cards", topic: "models", date: "2026-09-16", mins: 9,
+    en: { title: "How to read a model card like an engineer", dek: "Skip the leaderboard. The useful numbers are further down the page." },
+    zh: { title: "像工程师一样读懂模型卡", dek: "跳过排行榜，真正有用的数字藏在页面下方。" } },
+  { slug: "evals-before-vibes", topic: "agents", date: "2026-08-27", mins: 12,
+    en: { title: "Evals before vibes: testing LLM features", dek: "A spreadsheet of fifty examples beats a week of manual poking." },
+    zh: { title: "先评测，再凭感觉：如何测试 LLM 功能", dek: "一张五十条样例的表格，胜过一周的手动试探。" } },
+  { slug: "context-is-not-memory", topic: "models", date: "2026-08-05", mins: 7,
+    en: { title: "Context windows are not memory", dek: "A million tokens of context still forgets everything when the session ends." },
+    zh: { title: "上下文窗口不等于记忆", dek: "即使有百万 token 的上下文，会话结束时也会忘掉一切。" } },
+  { slug: "local-models-laptop", topic: "tools", date: "2026-07-18", mins: 10,
+    en: { title: "Local models on a laptop: what's worth running", dek: "Benchmarks on a 32 GB machine, and when local beats the API." },
+    zh: { title: "在笔记本上跑本地模型：哪些值得", dek: "在 32 GB 内存的机器上实测，以及本地何时胜过 API。" } },
+  { slug: "prompting-is-ui", topic: "tutorials", date: "2026-06-24", mins: 8,
+    en: { title: "Prompting is interface design", dek: "Treat the prompt like a form: clear labels, sensible defaults, strict output." },
+    zh: { title: "提示词就是界面设计", dek: "把提示词当成表单来设计：标签清晰、默认合理、输出严格。" } },
+  { slug: "one-agent-is-enough", topic: "agents", date: "2026-05-30", mins: 13,
+    en: { title: "Multi-agent systems: when one is enough", dek: "Splitting work across agents adds cost and failure points. Here's when it pays off." },
+    zh: { title: "多智能体系统：什么时候一个就够了", dek: "把任务拆给多个智能体会增加成本和故障点。这里讲清楚何时值得。" } },
+  { slug: "tokens-pizza", topic: "models", date: "2026-05-08", mins: 6,
+    en: { title: "Tokens, explained with a pizza", dek: "Why the same sentence costs a different number of tokens in Chinese and English, in one diagram." },
+    zh: { title: "用一块披萨讲明白 Token", dek: "一张图解释为什么同一句话的中文和英文，消耗的 token 数不一样。" } },
 ];
+
+const TYPES = {
+  prompts: { en: "Prompt pack", zh: "提示词包" },
+  repo: { en: "Starter repo", zh: "起步仓库" },
+  template: { en: "Template", zh: "模板" },
+  database: { en: "Database", zh: "数据库" },
+  course: { en: "Course", zh: "课程" },
+};
 
 const RESOURCES = [
-  { type: "template", url: "#resources",
-    en: { title: "Design Brief Template", mark: "Brief", format: "Notion + PDF", price: "Free", desc: "The one-page brief from the article, with prompts under every heading." },
-    zh: { title: "设计简报模板", mark: "简报", format: "Notion + PDF", price: "免费", desc: "文章中的那份一页纸简报，每个标题下都附有填写提示。" } },
-  { type: "toolkit", url: "#resources",
-    en: { title: "Critique Kit", mark: "Crit", format: "FigJam", price: "Free", desc: "Timed agenda, role cards, and a feedback grid for 45-minute reviews." },
-    zh: { title: "设计评审工具包", mark: "评审", format: "FigJam", price: "免费", desc: "计时议程、角色卡和反馈表格，适用于 45 分钟的评审。" } },
-  { type: "checklist", url: "#resources",
-    en: { title: "Empty State Checklist", mark: "∅", format: "PDF · 2 pages", price: "Free", desc: "Fourteen questions to ask of every screen before it has data." },
-    zh: { title: "空状态检查清单", mark: "∅", format: "PDF · 2 页", price: "免费", desc: "在每个屏幕拥有数据之前，值得追问的十四个问题。" } },
-  { type: "template", url: "#resources",
-    en: { title: "Token Naming Worksheet", mark: "--x", format: "Google Sheets", price: "Pay what you want", desc: "Map raw values to semantic names with your engineers in one sitting." },
-    zh: { title: "设计令牌命名工作表", mark: "--x", format: "Google 表格", price: "随意付费", desc: "与工程师一起，在一次会议内把原始数值映射为语义名称。" } },
-  { type: "reading", url: "#resources",
-    en: { title: "The Reading Shelf", mark: "Shelf", format: "42 books", price: "Free", desc: "Books on design, writing, and tools that changed how I work, with notes." },
-    zh: { title: "我的书架", mark: "书架", format: "42 本书", price: "免费", desc: "改变了我工作方式的设计、写作与工具类书籍，附读书笔记。" } },
-  { type: "guide", url: "#resources",
-    en: { title: "Quiet Software Field Guide", mark: "Field", format: "PDF · 64 pages", price: "$24", desc: "Patterns for calm interfaces, collected from six years of client work." },
-    zh: { title: "安静软件实践指南", mark: "指南", format: "PDF · 64 页", price: "$24", desc: "从六年客户项目中整理出的平静界面设计模式。" } },
+  { type: "prompts", topic: "tutorials", url: "#resources",
+    en: { title: "Developer Prompt Pack", meta: "120 prompts · Notion", price: "Free", desc: "Tested prompts for code review, docs, debugging and refactoring." },
+    zh: { title: "开发者提示词包", meta: "120 条提示词 · Notion", price: "免费", desc: "经过实测的提示词，覆盖代码评审、文档、调试与重构。" } },
+  { type: "repo", topic: "agents", url: "#resources",
+    en: { title: "Agent Starter Kit", meta: "TypeScript · ★ 2.4k", price: "Free", desc: "Tool calling, retries, step limits and tracing, wired up and ready to fork." },
+    zh: { title: "智能体起步套件", meta: "TypeScript · ★ 2.4k", price: "免费", desc: "工具调用、重试、步数限制和链路追踪均已配置好，直接 fork 即可。" } },
+  { type: "template", topic: "agents", url: "#resources",
+    en: { title: "LLM Eval Spreadsheet", meta: "Google Sheets", price: "Pay what you want", desc: "Score outputs against fifty examples and track regressions per prompt version." },
+    zh: { title: "LLM 评测表格", meta: "Google 表格", price: "随意付费", desc: "用五十条样例为输出打分，并按提示词版本追踪退化。" } },
+  { type: "database", topic: "tools", url: "#resources",
+    en: { title: "AI Tool Database", meta: "180 tools · Notion", price: "Free", desc: "Every tool I've tested, with pricing, verdicts and the video where I reviewed it." },
+    zh: { title: "AI 工具数据库", meta: "180 款工具 · Notion", price: "免费", desc: "我测试过的每一款工具，附价格、结论以及对应的评测视频。" } },
+  { type: "template", topic: "tutorials", url: "#resources",
+    en: { title: "RAG Launch Checklist", meta: "PDF · 3 pages", price: "Free", desc: "Twenty-two checks before you put retrieval in front of real users." },
+    zh: { title: "RAG 上线检查清单", meta: "PDF · 3 页", price: "免费", desc: "在把检索功能交给真实用户之前，需要完成的二十二项检查。" } },
+  { type: "course", topic: "models", url: "#resources",
+    en: { title: "Shipping with LLMs", meta: "6 modules · 4.5 hours", price: "$49", desc: "From first API call to production: evals, cost control, caching and monitoring." },
+    zh: { title: "用 LLM 交付产品", meta: "6 个模块 · 4.5 小时", price: "$49", desc: "从第一次 API 调用到上线生产：评测、成本控制、缓存与监控。" } },
 ];
-
-const TOPICS = {
-  craft: { en: "Craft", zh: "手艺" }, practice: { en: "Practice", zh: "实践" },
-  writing: { en: "Writing", zh: "写作" }, systems: { en: "Systems", zh: "设计系统" },
-};
-const TYPES = {
-  template: { en: "Template", zh: "模板" }, toolkit: { en: "Toolkit", zh: "工具包" },
-  checklist: { en: "Checklist", zh: "清单" }, reading: { en: "Reading list", zh: "书单" }, guide: { en: "Guide", zh: "指南" },
-};
 
 /* Full article text, per language, keyed by slug. Missing entries show a placeholder. */
 const BODIES = {
   en: {
-    "on-defaults": `
-      <p>Every product ships with thousands of decisions its users will never see. Which panel opens first. Whether autosave is on. How many items fit on a page before it paginates. These are defaults, and for most people they are not a starting point. They are the product.</p>
-      <aside class="note">Across three client products I've measured, fewer than 6% of active users had ever opened the settings screen.</aside>
-      <p>We tend to treat settings as the place where the real decisions live, and defaults as the polite fallback. The numbers say the opposite. If almost nobody changes a value, then whatever you picked is the experience almost everybody has.</p>
-      <blockquote>A default is a decision you make on behalf of thousands of people who will never know you made it.</blockquote>
-      <h2>Defaults are opinions</h2>
-      <p>The kindest thing a designer can do is have a clear opinion and set it as the default, while leaving a door open for the few who need something else. An empty field labelled "choose your preference" is not neutral. It hands your design work to the person least equipped to do it.</p>
-      <aside class="note">See also: “Empty states are onboarding”, March 2026.</aside>
-      <p>Good defaults share three traits. They suit the most common case rather than the loudest one. They can be undone without penalty. And they explain themselves when someone does go looking.</p>
-      <h2>How to find them</h2>
-      <p>Start by listing every value a new user inherits. Most teams are surprised by the length of that list. Then ask, for each one, who chose it and when. The answers are usually "an engineer, on a Friday, to get the tests passing". That isn't a criticism. It's an opportunity.</p>`,
+    "agents-that-dont-break": `
+      <p>I've reviewed a lot of agent code this year, from weekend projects to production systems at funded startups. The failures look different on the surface, but they almost always trace back to the same three things. None of them are about which model you picked.</p>
+      <h2>1. Every loop needs a ceiling</h2>
+      <p>An agent without a step limit will, eventually, spend your entire budget calling the same tool with the same arguments. Set a hard maximum and treat hitting it as an error you log and review.</p>
+<pre><span class="k">const</span> result = <span class="k">await</span> agent.run({
+  task: <span class="s">"Summarize open issues"</span>,
+  tools: [github.search, github.read],
+  maxSteps: <span class="n">8</span>,              <span class="c">// hard ceiling</span>
+  toolTimeoutMs: <span class="n">15_000</span>,
+  onToolError: <span class="s">"retry-once"</span>,
+});</pre>
+      <blockquote>The model is rarely the weakest part of an agent. The plumbing around it is.</blockquote>
+      <h2>2. Tool descriptions are prompts</h2>
+      <p>The description you write for each tool is the only documentation the model ever reads. "Searches GitHub" is not enough. Say what it returns, when to use it instead of the other tools, and what a good query looks like.</p>
+      <div class="callout">In my tests, rewriting four tool descriptions cut wrong-tool calls by more than half, with no other changes.</div>
+      <h2>3. Make failure visible</h2>
+      <p>Log every step: the tool called, its arguments, how long it took, and what came back. When something goes wrong at 2 a.m., a trace is the difference between a five-minute fix and a lost day.</p>`,
   },
   zh: {
-    "on-defaults": `
-      <p>每个产品发布时都带着成千上万个用户永远看不到的决定：先打开哪个面板，是否开启自动保存，一页显示多少条才开始分页。这些都是默认值。对大多数人来说，它们不是起点，而是产品本身。</p>
-      <aside class="note">在我测量过的三个客户产品中，打开过设置页面的活跃用户不到 6%。</aside>
-      <p>我们习惯把设置页看作真正做决定的地方，把默认值当作礼貌的后备方案。数据却恰恰相反。如果几乎没有人修改某个值，那么你选的那个值，就是几乎所有人得到的体验。</p>
-      <blockquote>默认值，是你替成千上万人做出的决定，而他们永远不会知道。</blockquote>
-      <h2>默认值就是观点</h2>
-      <p>设计师能做的最体贴的事，是拥有清晰的观点并把它设为默认，同时为少数有不同需要的人留一扇门。一个标着“请选择您的偏好”的空白选项并不中立，它把设计工作交给了最不具备条件完成它的人。</p>
-      <aside class="note">另见：《空状态就是新手引导》，2026 年 3 月。</aside>
-      <p>好的默认值有三个共同点：它们服务于最常见的情况，而不是声音最大的那一种；它们可以被无代价地撤销；当有人去探究时，它们能解释自己。</p>
-      <h2>如何找到它们</h2>
-      <p>先列出新用户继承的每一个值。大多数团队都会惊讶于这份清单的长度。然后逐一追问：这是谁、在什么时候选的？答案往往是“某位工程师，在某个周五，为了让测试通过”。这不是批评，而是机会。</p>`,
+    "agents-that-dont-break": `
+      <p>今年我审阅了大量智能体代码，从周末项目到获得融资的创业公司的生产系统。表面上故障五花八门，但几乎都能追溯到同样的三个原因，而且没有一个与你选了哪个模型有关。</p>
+      <h2>1. 每个循环都需要上限</h2>
+      <p>没有步数限制的智能体，迟早会用同样的参数反复调用同一个工具，把你的预算烧光。设置一个硬上限，并把触达上限当作需要记录和复盘的错误。</p>
+<pre><span class="k">const</span> result = <span class="k">await</span> agent.run({
+  task: <span class="s">"Summarize open issues"</span>,
+  tools: [github.search, github.read],
+  maxSteps: <span class="n">8</span>,              <span class="c">// 硬上限</span>
+  toolTimeoutMs: <span class="n">15_000</span>,
+  onToolError: <span class="s">"retry-once"</span>,
+});</pre>
+      <blockquote>智能体最薄弱的环节很少是模型本身，而是它周围的管道。</blockquote>
+      <h2>2. 工具描述就是提示词</h2>
+      <p>你为每个工具写的描述，是模型唯一会读的文档。“搜索 GitHub”远远不够。要写清楚它返回什么、什么时候该用它而不是其他工具，以及好的查询长什么样。</p>
+      <div class="callout">在我的测试中，只改写四个工具的描述，选错工具的调用就减少了一半以上。</div>
+      <h2>3. 让失败可见</h2>
+      <p>记录每一步：调用了哪个工具、参数是什么、耗时多久、返回了什么。凌晨两点出问题时，有没有链路追踪，决定了你是五分钟修好还是浪费一整天。</p>`,
   },
 };
 
 /* ════════════════════════════════════════════════════════════════
    TRANSLATIONS. English is read from the markup at load; Chinese is here.
    ════════════════════════════════════════════════════════════════ */
-const UI = {
-  zh: {
-    "wordmark": "Theo <span>Lindqvist</span>",
-    "wordmark.label": "Theo Lindqvist，首页",
-    "nav.label": "主导航",
-    "nav.resources": "资源", "nav.articles": "文章", "nav.about": "关于",
-    "meta.role": "独立产品设计师",
-    "meta.place": "斯德哥尔摩 · 北纬 59.33°，东经 18.07°",
-    "thesis": `我为以思考为生的人<a class="mark" href="#about" style="--i:0"><span>设计安静的软件</span></a>。我<a class="mark" href="#articles" style="--i:1"><span>书写这门手艺</span></a>，并<a class="mark" href="#resources" style="--i:2"><span>免费分享我在用的工具</span></a>。`,
-    "ledger.latest": "最新文章", "ledger.shelf": "新上架", "ledger.now": "近况",
-    "ledger.nowTitle": "正在为一款野外科研应用设计离线模式",
-    "ledger.nowMeta": "2027 年 2 月起可接新项目",
-    "home.writing": "近期文章",
-    "home.writingText": "关于界面手艺、设计系统，以及让小团队持续交付的工作习惯。",
-    "home.writingMore": "全部文章",
-    "home.shelf": "资源书架",
-    "home.shelfText": "来自真实客户项目的模板、工具包和清单。大多免费。",
-    "home.shelfMore": "浏览资源",
-    "home.about": "关于作者",
-    "home.aboutMore": "完整介绍",
-    "home.portrait": "肖像占位图",
-    "home.quote": "好的软件应该像一支做工精良的铅笔：<em>你注意到的是作品，而不是工具。</em>",
-    "home.aboutText": "十二年来，我一直在为研究者、编辑和分析师设计工具。如今我每年与两到三个团队合作，并把所学写下来。",
-    "articles.eyebrow": "索引",
-    "articles.lede": "关于界面手艺、设计系统和工作实践的文章。大约每月更新一篇。",
-    "resources.eyebrow": "书架",
-    "resources.lede": "我在客户项目中使用的模板和工具包，整理之后分享给你。除特别标注外均免费。",
-    "filter.topic": "按主题筛选", "filter.type": "按类型筛选",
-    "about.name": "Theo Lindqvist",
-    "about.lede": "独立产品设计师。我帮助小团队打造平静、耐用、专注于工作的工具。",
-    "facts.based": "所在地", "facts.basedV": "瑞典，斯德哥尔摩",
-    "facts.focus": "专注领域", "facts.focusV": "科研工具、编辑器、内部软件",
-    "facts.prev": "此前", "facts.prevV": "某笔记类创业公司设计负责人；六年设计公司经验",
-    "facts.avail": "档期", "facts.availV": "2027 年 2 月起可预约",
-    "facts.contact": "联系方式", "facts.copy": "复制邮箱",
-    "about.p1": "我为以思考为主要工作的人设计软件：研究者、编辑、分析师，以及支持他们的团队。我的目标始终如一：工具用得越久，就应该越安静。",
-    "about.p2": "我从设计公司起步，在紧迫的截止日期下交付营销网站，几乎没有余地去追问是否真的有人需要它们。之后我在一家小型笔记公司担任了四年设计负责人，在那里我认识到，产品的默认设置会在多大程度上塑造人们的思考方式。自 2023 年起，我以独立身份每年与两到三个团队合作。",
-    "about.p3": "在客户工作之外，我撰写关于这门手艺的文章，并公开我真正在用的模板。如果这里的某些内容对你有帮助，我很想听你说说。",
-    "about.how": "我的工作方式",
-    "pr.1": "从第十次使用开始设计。", "pr.1t": "第一印象远不如第一百次使用重要。我为已经熟悉产品的人而设计。",
-    "pr.2": "先写，再画。", "pr.2t": "每个项目都从一页纸简报开始。如果无法用平实的语言写清楚，就还没准备好进入设计。",
-    "pr.3": "小团队，长合作。", "pr.3t": "我会深度参与三到六个月，与日后维护成果的工程师并肩工作。",
-    "about.timeline": "经历",
-    "tl.1y": "2023 – 至今",
-    "tl.1": "<b>独立执业。</b>客户涵盖科研、出版和气候数据领域。",
-    "tl.2": "<b>笔记类创业公司设计负责人。</b>将设计团队从一人发展到五人。",
-    "tl.3": "<b>先后任职于两家设计工作室</b>，分别位于哥德堡和哥本哈根。",
-    "about.elsewhere": "其他平台",
-    "read.back": "← 文章",
-    "letter.title": "每月<b>一封信。</b>",
-    "letter.text": "新文章和新资源发布时第一时间送达。没有追踪像素，一键即可退订。",
-    "letter.label": "电子邮箱",
-    "letter.submit": "订阅 →",
-    "colophon": "© 2026 Theo Lindqvist · 字体：Bricolage Grotesque、Newsreader、IBM Plex Mono、思源黑体、思源宋体",
-    "theme.label": "配色主题", "theme.light": "墨水", "theme.auto": "自动", "theme.dark": "蓝晒",
-  },
+const UI = { zh: {
+  "nav.label": "主导航", "nav.resources": "资源", "nav.articles": "文章", "nav.about": "关于", "nav.subscribe": "订阅",
+  "hero.new": "最新",
+  "hero.title": `把 AI <span class="grad">讲明白。</span>`,
+  "hero.sub": "我是 Kai。我测试新模型，用新工具做真实的项目，再告诉你哪些值得花时间。<b>每周更新，面向 24 万开发者与创造者。</b>",
+  "hero.cta1": "开始阅读", "hero.cta2": "免费资源",
+  "stat.yt": "24万", "stat.ytL": "YouTube 订阅", "stat.nl": "8.6万", "stat.nlL": "Newsletter 读者",
+  "stat.views": "310万", "stat.viewsL": "月播放量", "stat.x": "12万", "stat.xL": "X 关注者", "stat.bili": "5.8万", "stat.biliL": "B 站粉丝",
+  "map.aria": "一张三维地图，展示所有文章和资源，按四个主题聚类",
+  "map.legend": "高亮某个主题",
+  "map.caption": "每个点都是我发布过的内容，按主题聚类。拖动可旋转。",
+  "home.latestK": "最新文章", "home.latest": "实验室新鲜出炉", "home.allArticles": "全部文章",
+  "home.res": "直接拿走我的工具箱", "home.resText": "我每天都在用的提示词、起步仓库和模板。大多免费。", "home.allRes": "全部资源",
+  "home.ppTitle": "开发者提示词包", "home.ppText": "120 条实测提示词，覆盖代码、文档与调试。", "home.ppCta": "免费获取",
+  "home.aboutTitle": "前机器学习工程师，现在全职用可运行的代码讲解 AI。",
+  "home.aboutText": "在开始做视频之前，我花了六年时间交付机器学习系统。我发布的每一样东西，都是我亲手搭建并测试过的。",
+  "home.aboutMore": "更多关于我",
+  "articles.k": "写作", "articles.lede": "关于模型、智能体与开发工具的动手拆解。每个结论都经过测试，每个演示都能运行。",
+  "filter.topic": "按主题筛选", "filter.type": "按类型筛选", "search.ph": "搜索文章",
+  "resources.k": "工具箱", "resources.lede": "我视频背后的提示词、仓库、模板和课程。除特别标注外均免费。",
+  "about.title": `你好，我是 <span class="grad">Kai。</span>`,
+  "about.lede": "我让 AI 对动手做东西的人变得好懂：视频、每周 Newsletter，以及开源起步套件。",
+  "about.workCta": "商务合作",
+  "about.storyT": "简短版本",
+  "about.p1": "我最初是一名机器学习工程师，在两家创业公司做搜索和推荐系统。2022 年，我开始录视频讲解工作中读到的论文，主要是为了帮助自己理解。",
+  "about.p2": "大家总是来要代码。所以现在每个视频都配有可运行的仓库，每篇文章都附带演示。自 2024 年起我全职做这件事。",
+  "about.p3": "我的原则很简单：没亲手做过的，我不讲。",
+  "about.timelineT": "经历",
+  "tl.1": "24 万订阅", "tl.1d": "推出《用 LLM 交付产品》课程",
+  "tl.2": "全职创作", "tl.2d": "开始每周 Newsletter",
+  "tl.3": "第一个视频", "tl.3d": "《用代码讲解注意力机制》",
+  "tl.4": "机器学习工程师", "tl.4d": "在两家创业公司做搜索与推荐",
+  "about.stackT": "我的工具", "about.workT": "商务合作",
+  "about.workP": "每个季度，我会与少数开发者工具和 AI 公司合作，制作赞助视频和 Newsletter 专题。我只介绍自己会用的产品。",
+  "about.copy": "复制邮箱",
+  "read.back": "全部文章",
+  "letter.k": "Newsletter", "letter.title": "5 分钟 AI 简报",
+  "letter.text": "每周四送达：新发布了什么、哪些是炒作，以及一个值得动手做的项目。已有 8.6 万读者订阅。",
+  "letter.label": "电子邮箱", "letter.submit": "订阅", "letter.fine": "免费，无垃圾邮件，一键退订。",
+  "theme.label": "配色主题", "theme.dark": "深色", "theme.auto": "自动", "theme.light": "浅色",
+} };
+
+const MSG = {
+  en: { all: "All", min: n => `${n} min read`, locale: "en-GB", none: "Nothing matches that search yet.",
+        copied: "Copied", selected: "Selected. Press Ctrl+C", badEmail: "Enter a full email address, like name@example.com.",
+        ok: "You're in. Check your inbox to confirm.", items: n => `${n} items`, open: "Click to open",
+        placeholder: s => `Article text goes here. Add it to BODIES.en["${s}"] in the script at the bottom of index.html.`,
+        title: v => ({ home: "Kai Chen", articles: "Articles · Kai Chen", resources: "Resources · Kai Chen", about: "About · Kai Chen" })[v] },
+  zh: { all: "全部", min: n => `阅读约 ${n} 分钟`, locale: "zh-CN", none: "没有找到匹配的内容。",
+        copied: "已复制", selected: "已选中，请按 Ctrl+C", badEmail: "请输入完整的邮箱地址，例如 name@example.com。",
+        ok: "订阅成功，请查收确认邮件。", items: n => `${n} 项内容`, open: "点击打开",
+        placeholder: s => `正文待补充。请在 index.html 底部脚本的 BODIES.zh["${s}"] 中添加。`,
+        title: v => ({ home: "Kai Chen", articles: "文章 · Kai Chen", resources: "资源 · Kai Chen", about: "关于 · Kai Chen" })[v] },
 };
 
-/* Strings used only by the script, in both languages. */
-const MSG = {
-  en: {
-    all: "All", min: n => `${n} min`, minRead: n => `${n} min read`, local: t => `${t} local time`,
-    noArticles: "No articles in this topic yet.", copied: "Copied", selected: "Selected, press ⌘C / Ctrl+C",
-    badEmail: "Enter a full email address, like name@example.com.", ok: "Almost done. Check your inbox to confirm.",
-    placeholder: s => `Article text goes here. Add it to BODIES.en["${s}"] in the script at the bottom of index.html.`,
-    title: v => ({ home: "Theo Lindqvist", articles: "Articles · Theo Lindqvist", resources: "Resources · Theo Lindqvist", about: "About · Theo Lindqvist" })[v],
-    locale: "en-GB",
-  },
-  zh: {
-    all: "全部", min: n => `${n} 分钟`, minRead: n => `阅读约 ${n} 分钟`, local: t => `当地时间 ${t}`,
-    noArticles: "该主题下暂无文章。", copied: "已复制", selected: "已选中，请按 ⌘C / Ctrl+C",
-    badEmail: "请输入完整的邮箱地址，例如 name@example.com。", ok: "还差一步：请查收确认邮件。",
-    placeholder: s => `正文待补充。请在 index.html 底部脚本的 BODIES.zh["${s}"] 中添加。`,
-    title: v => ({ home: "Theo Lindqvist", articles: "文章 · Theo Lindqvist", resources: "资源 · Theo Lindqvist", about: "关于 · Theo Lindqvist" })[v],
-    locale: "zh-CN",
-  },
+/* Topic glyphs, used small in lists and large on covers. */
+const ICONS = {
+  agents: `<svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"><circle cx="60" cy="28" r="12"/><circle cx="26" cy="88" r="12"/><circle cx="94" cy="88" r="12"/><path d="M53 39 33 77M67 39l20 38M38 88h44"/></svg>`,
+  models: `<svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"><path d="m60 18 44 22-44 22-44-22z"/><path d="m16 60 44 22 44-22"/><path d="m16 80 44 22 44-22"/></svg>`,
+  tools: `<svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><rect x="12" y="22" width="96" height="76" rx="12"/><path d="m32 50 14 12-14 12M56 76h28"/></svg>`,
+  tutorials: `<svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"><circle cx="60" cy="60" r="44"/><path d="M50 42v36l30-18z"/></svg>`,
 };
 
 /* ════════════════════════════════════════════════════════════════
@@ -802,109 +937,103 @@ const MSG = {
    ════════════════════════════════════════════════════════════════ */
 const $ = (s, el = document) => el.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-
-let lang = "en";                    // "en" | "zh"
-let articleFilter = "all", resourceFilter = "all";
+let lang = "en", articleTopic = "all", resourceType = "all", query = "";
+let cloud = null;
 const L = () => MSG[lang];
-const fmtDate = (iso, opts = { month: "short", year: "numeric" }) =>
-  new Date(iso + "T12:00:00").toLocaleDateString(L().locale, opts);
+const fmtDate = (iso, o = { day: "numeric", month: "short", year: "numeric" }) => new Date(iso + "T12:00:00").toLocaleDateString(L().locale, o);
 
-// Harvest the English strings from the markup once, so English is written only in HTML.
-const EN = {}, EN_ATTR = {};
-document.querySelectorAll("[data-i18n]").forEach(el => { EN[el.dataset.i18n] ??= el.innerHTML; });
-document.querySelectorAll("[data-i18n-attr]").forEach(el => {
-  const [attr, key] = el.dataset.i18nAttr.split(":"); EN_ATTR[key] ??= el.getAttribute(attr);
-});
+// Stable per-item gradient positions for covers.
+function hash(s) { let h = 2166136261; for (const c of s) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return h >>> 0; }
+function coverHTML(topic, seed, extra = "", id = "") {
+  const h = hash(seed), p = n => 10 + ((h >> n) & 63);
+  return `<div ${id ? `id="${id}"` : ""} class="cover ${extra}" data-topic="${topic}" style="--x1:${p(0)}%;--y1:${p(6)}%;--x2:${100 - p(12) / 2}%;--y2:${100 - p(18) / 2}%">
+    <span class="cover-label">${esc(TOPICS[topic][lang])}</span>${ICONS[topic]}</div>`;
+}
+const tagHTML = t => `<span class="tag" data-topic="${t}">${esc(TOPICS[t][lang])}</span>`;
 
-function entryHTML(a) {
+function articleCard(a) {
   const t = a[lang];
-  return `<li><a class="entry" href="#read-${a.slug}">
-    <time class="mono" datetime="${a.date}">${fmtDate(a.date)}</time>
-    <h3>${esc(t.title)}</h3>
-    <span class="readtime mono"><span>${L().min(a.mins)}</span><span class="bar" aria-hidden="true"><i style="--m:${Math.min(a.mins, 20)}"></i></span></span>
-    <p class="dek">${esc(t.dek)}</p>
-  </a></li>`;
+  return `<a class="card" href="#read-${a.slug}" data-topic="${a.topic}">
+    ${coverHTML(a.topic, a.slug)}
+    <div class="text"><div class="row">${tagHTML(a.topic)}<span class="meta">${L().min(a.mins)}</span></div>
+    <h3>${esc(t.title)}</h3><p>${esc(t.dek)}</p><span class="meta">${fmtDate(a.date)}</span></div></a>`;
 }
-function resourceHTML(r) {
+function resourceCard(r) {
   const t = r[lang];
-  return `<a class="res" href="${r.url}">
-    <div class="cover"><b aria-hidden="true">${esc(t.mark)}</b><span class="fmt mono">${esc(t.format)}</span><span class="price mono">${esc(t.price)}</span></div>
-    <p class="eyebrow">${esc(TYPES[r.type][lang])}</p>
-    <h3>${esc(t.title)}</h3>
-    <p>${esc(t.desc)}</p>
-  </a>`;
+  return `<a class="card" href="${r.url}" data-topic="${r.topic}">
+    ${coverHTML(r.topic, r.en.title)}
+    <div class="text"><div class="row"><span class="tag" data-topic="${r.topic}">${esc(TYPES[r.type][lang])}</span><span class="price">${esc(t.price)}</span></div>
+    <h3>${esc(t.title)}</h3><p>${esc(t.desc)}</p><span class="meta">${esc(t.meta)}</span></div></a>`;
 }
 
-function filterBar(el, dict, keys, current, onPick) {
-  const all = ["all", ...keys];
-  el.innerHTML = all.map(k => `<button type="button" data-key="${k}" aria-pressed="${k === current}">${esc(k === "all" ? L().all : dict[k][lang])}</button>`).join("");
-  el.onclick = e => {
-    const b = e.target.closest("button"); if (!b) return;
-    el.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
-    onPick(b.dataset.key);
-  };
+function renderHome() {
+  const [f, ...rest] = ARTICLES;
+  const pill = $("#latest-pill");
+  pill.href = `#read-${f.slug}`; pill.dataset.topic = f.topic;
+  $("#latest-pill-title").textContent = f[lang].title;
+  $("#bento").innerHTML = `
+    <a class="feature" href="#read-${f.slug}" data-topic="${f.topic}">${coverHTML(f.topic, f.slug)}
+      <div class="text">${tagHTML(f.topic)}<h3>${esc(f[lang].title)}</h3><p>${esc(f[lang].dek)}</p>
+      <div class="meta"><span>${fmtDate(f.date)}</span><span>${L().min(f.mins)}</span></div></div></a>
+    <div class="stack">${rest.slice(0, 3).map(a => `
+      <a class="mini" href="#read-${a.slug}" data-topic="${a.topic}">${coverHTML(a.topic, a.slug)}
+        <div class="text">${tagHTML(a.topic)}<h3>${esc(a[lang].title)}</h3><div class="meta"><span>${fmtDate(a.date)}</span><span>${L().min(a.mins)}</span></div></div></a>`).join("")}
+    </div>`;
+  $("#res-list").innerHTML = RESOURCES.slice(1, 5).map(r => `
+    <li><a class="res-row" href="${r.url}" data-topic="${r.topic}">
+      <span class="glyph" aria-hidden="true">${ICONS[r.topic]}</span>
+      <h3>${esc(r[lang].title)}</h3><span class="price">${esc(r[lang].price)}</span>
+      <span class="meta"><span>${esc(TYPES[r.type][lang])}</span><span>${esc(r[lang].meta)}</span></span>
+    </a></li>`).join("");
+  $("#topic-chips").innerHTML = Object.keys(TOPICS).map(k =>
+    `<a href="#articles" data-topic="${k}" data-pick-topic="${k}">${esc(TOPICS[k][lang])}<b>${ARTICLES.filter(a => a.topic === k).length}</b></a>`).join("");
+}
+
+function chips(el, dict, keys, current, onPick, dots) {
+  el.innerHTML = ["all", ...keys].map(k => {
+    const t = k !== "all" && dots;
+    return `<button type="button" data-key="${k}" ${t ? `data-topic="${k}"` : ""} aria-pressed="${k === current}">${t ? "<i></i>" : ""}${esc(k === "all" ? L().all : dict[k][lang])}</button>`;
+  }).join("");
+  el.onclick = e => { const b = e.target.closest("button"); if (!b) return;
+    el.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); onPick(b.dataset.key); };
 }
 function renderArticles() {
-  const list = ARTICLES.filter(a => articleFilter === "all" || a.topic === articleFilter);
-  const years = [...new Set(list.map(a => a.date.slice(0, 4)))];
-  $("#article-years").innerHTML = years.map(y => `<section class="year-group">
-    <h2>${y}</h2><ol class="index">${list.filter(a => a.date.startsWith(y)).map(entryHTML).join("")}</ol></section>`).join("")
-    || `<p class="mono">${L().noArticles}</p>`;
+  const q = query.trim().toLowerCase();
+  const list = ARTICLES.filter(a => (articleTopic === "all" || a.topic === articleTopic) &&
+    (!q || (a[lang].title + " " + a[lang].dek).toLowerCase().includes(q)));
+  $("#article-grid").innerHTML = list.map(articleCard).join("") || `<p class="empty">${L().none}</p>`;
 }
 function renderResources() {
-  $("#all-resources").innerHTML = RESOURCES.filter(r => resourceFilter === "all" || r.type === resourceFilter).map(resourceHTML).join("");
+  $("#resource-grid").innerHTML = RESOURCES.filter(r => resourceType === "all" || r.type === resourceType).map(resourceCard).join("");
 }
 function renderRead(slug) {
-  const a = ARTICLES.find(x => x.slug === slug);
-  if (!a) return false;
-  const t = a[lang];
-  $("#read-topic").textContent = TOPICS[a.topic][lang];
-  $("#read-title").textContent = t.title;
-  $("#read-dek").textContent = t.dek;
-  $("#read-byline").innerHTML = `<span>Theo Lindqvist</span><span>${fmtDate(a.date, { day: "numeric", month: "long", year: "numeric" })}</span><span>${L().minRead(a.mins)}</span>`;
+  const a = ARTICLES.find(x => x.slug === slug); if (!a) return false;
+  $("#read-wrap").dataset.topic = a.topic;
+  $("#read-cover").outerHTML = coverHTML(a.topic, a.slug, "read-cover", "read-cover");
+  $("#read-tag").dataset.topic = a.topic; $("#read-tag").textContent = TOPICS[a.topic][lang];
+  $("#read-title").textContent = a[lang].title;
+  $("#read-dek").textContent = a[lang].dek;
+  $("#read-meta").innerHTML = `<span>Kai Chen</span><span>${fmtDate(a.date, { day: "numeric", month: "long", year: "numeric" })}</span><span>${L().min(a.mins)}</span>`;
   $("#read-body").innerHTML = BODIES[lang][slug] || `<p class="placeholder">${esc(L().placeholder(slug))}</p>`;
   return true;
 }
 
+// Harvest English strings from the markup once.
+const EN = {}, EN_ATTR = {};
+document.querySelectorAll("[data-i18n]").forEach(el => { EN[el.dataset.i18n] ??= el.innerHTML; });
+document.querySelectorAll("[data-i18n-attr]").forEach(el => { const [a, k] = el.dataset.i18nAttr.split(":"); EN_ATTR[k] ??= el.getAttribute(a); });
+
 function renderAll() {
-  // static strings
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    const k = el.dataset.i18n;
-    el.innerHTML = lang === "en" ? EN[k] : (UI.zh[k] ?? EN[k]);
-  });
-  document.querySelectorAll("[data-i18n-attr]").forEach(el => {
-    const [attr, k] = el.dataset.i18nAttr.split(":");
-    el.setAttribute(attr, lang === "en" ? EN_ATTR[k] : (UI.zh[k] ?? EN_ATTR[k]));
-  });
-  document.querySelectorAll("[data-count]").forEach(el => {
-    el.textContent = el.dataset.count === "articles" ? ARTICLES.length : RESOURCES.length;
-  });
-  // data-driven blocks
-  const latest = ARTICLES[0], newest = RESOURCES[0];
-  $("#latest-link").href = `#read-${latest.slug}`;
-  $("#latest-title").textContent = latest[lang].title;
-  $("#latest-meta").textContent = `${fmtDate(latest.date, { day: "numeric", month: "short", year: "numeric" })} · ${L().minRead(latest.mins)}`;
-  $("#newest-title").textContent = newest[lang].title;
-  $("#newest-meta").textContent = `${newest[lang].format} · ${newest[lang].price}`;
-  $("#home-articles").innerHTML = ARTICLES.slice(0, 4).map(entryHTML).join("");
-  $("#home-resources").innerHTML = RESOURCES.slice(0, 3).map(resourceHTML).join("");
-  filterBar($("#article-filters"), TOPICS, [...new Set(ARTICLES.map(a => a.topic))], articleFilter, k => { articleFilter = k; renderArticles(); });
-  filterBar($("#resource-filters"), TYPES, [...new Set(RESOURCES.map(r => r.type))], resourceFilter, k => { resourceFilter = k; renderResources(); });
+  document.querySelectorAll("[data-i18n]").forEach(el => { const k = el.dataset.i18n; el.innerHTML = lang === "en" ? EN[k] : (UI.zh[k] ?? EN[k]); });
+  document.querySelectorAll("[data-i18n-attr]").forEach(el => { const [a, k] = el.dataset.i18nAttr.split(":"); el.setAttribute(a, lang === "en" ? EN_ATTR[k] : (UI.zh[k] ?? EN_ATTR[k])); });
+  document.querySelectorAll("[data-count]").forEach(el => { el.textContent = el.dataset.count === "articles" ? ARTICLES.length : RESOURCES.length; });
+  renderHome();
+  chips($("#article-chips"), TOPICS, Object.keys(TOPICS), articleTopic, k => { articleTopic = k; renderArticles(); }, true);
+  chips($("#resource-chips"), TYPES, [...new Set(RESOURCES.map(r => r.type))], resourceType, k => { resourceType = k; renderResources(); }, false);
   renderArticles(); renderResources();
   $("#letter-status").textContent = "";
-  tick();
+  if (cloud) cloud.relabel();
 }
-
-/* ── Language ── */
-function setLang(code, { save = true } = {}) {
-  lang = code.startsWith("zh") ? "zh" : "en";
-  document.documentElement.lang = lang === "zh" ? "zh-Hans" : "en";
-  document.querySelectorAll("[data-lang-set]").forEach(b => b.setAttribute("aria-pressed", b.dataset.langSet.startsWith(lang)));
-  if (save) { try { localStorage.setItem("lang", lang); } catch (e) {} }
-  renderAll();
-  route({ keepScroll: true });
-}
-document.querySelectorAll("[data-lang-set]").forEach(b => b.addEventListener("click", () => setLang(b.dataset.langSet)));
 
 /* ── Router: #home, #articles, #resources, #about, #read-<slug> ── */
 function route({ keepScroll = false } = {}) {
@@ -913,27 +1042,45 @@ function route({ keepScroll = false } = {}) {
   if (h.startsWith("read-")) view = renderRead(h.slice(5)) ? "read" : "articles";
   if (!document.querySelector(`[data-view="${view}"]`)) view = "home";
   document.querySelectorAll("[data-view]").forEach(v => { v.hidden = v.dataset.view !== view; });
-  document.querySelectorAll("[data-nav]").forEach(a => {
-    if (a.dataset.nav === view) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
-  });
-  document.title = view === "read" ? `${$("#read-title").textContent} · Theo Lindqvist` : L().title(view);
-  if (!keepScroll) window.scrollTo(0, 0);
+  document.querySelectorAll("[data-nav]").forEach(a => a.dataset.nav === view ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
+  document.title = view === "read" ? `${$("#read-title").textContent} · Kai Chen` : L().title(view);
+  if (cloud) cloud.setActive(view === "home");
+  if (!keepScroll) window.scrollTo({ top: 0, behavior: "instant" });
 }
 addEventListener("hashchange", () => route());
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-pick-topic]");
+  if (t) { articleTopic = t.dataset.pickTopic; query = ""; $("#article-search").value = ""; renderAll(); }
+  const s = e.target.closest("[data-subscribe]");
+  if (s) { $("#newsletter").scrollIntoView({ behavior: "smooth", block: "center" }); setTimeout(() => $("#letter-email").focus({ preventScroll: true }), 600); }
+  const g = e.target.closest("[data-scroll]");
+  if (g) document.getElementById(g.dataset.scroll).scrollIntoView({ behavior: "smooth", block: "start" });
+});
+$("#article-search").addEventListener("input", e => { query = e.target.value; renderArticles(); });
 
-/* ── Live local time ── */
-function tick() {
-  let t = "--:--";
-  try { t = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Stockholm", timeZoneName: "short" }).format(new Date()); } catch (e) {}
-  $("#clock").textContent = L().local(t);
+/* ── Language ── */
+function setLang(code, save = true) {
+  lang = code === "zh" ? "zh" : "en";
+  document.documentElement.lang = lang === "zh" ? "zh-Hans" : "en";
+  document.querySelectorAll("[data-lang-set]").forEach(b => b.setAttribute("aria-pressed", b.dataset.langSet === lang));
+  if (save) { try { localStorage.setItem("lang", lang); } catch (e) {} }
+  renderAll(); route({ keepScroll: true });
 }
-setInterval(tick, 20000);
+document.querySelectorAll("[data-lang-set]").forEach(b => b.addEventListener("click", () => setLang(b.dataset.langSet)));
+
+/* ── Theme ── */
+function setTheme(t) {
+  if (t === "system") document.documentElement.removeAttribute("data-theme"); else document.documentElement.setAttribute("data-theme", t);
+  document.querySelectorAll("[data-theme-set]").forEach(b => b.setAttribute("aria-pressed", b.dataset.themeSet === t));
+  try { localStorage.setItem("theme", t); } catch (e) {}
+  if (cloud) cloud.recolor();
+}
+document.querySelectorAll("[data-theme-set]").forEach(b => b.addEventListener("click", () => setTheme(b.dataset.themeSet)));
 
 /* ── Copy email ── */
 document.querySelectorAll("[data-copy]").forEach(btn => btn.addEventListener("click", () => {
-  const el = document.getElementById(btn.dataset.copy);
-  const original = btn.innerHTML;
-  const done = () => { btn.textContent = L().copied; setTimeout(() => (btn.innerHTML = original), 1800); };
+  const el = document.getElementById(btn.dataset.copy), orig = btn.innerHTML;
+  const done = () => { btn.textContent = L().copied; setTimeout(() => (btn.innerHTML = orig), 1800); };
   const select = () => { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = L().selected; };
   if (navigator.clipboard) navigator.clipboard.writeText(el.textContent).then(done, select); else select();
 }));
@@ -942,26 +1089,155 @@ document.querySelectorAll("[data-copy]").forEach(btn => btn.addEventListener("cl
 $("#letter-form").addEventListener("submit", e => {
   e.preventDefault();
   const input = $("#letter-email"), status = $("#letter-status");
-  if (!input.checkValidity() || !input.value) { status.textContent = L().badEmail; input.focus(); return; }
-  status.textContent = L().ok;
-  input.value = "";
+  if (!input.value || !input.checkValidity()) { status.textContent = L().badEmail; input.focus(); return; }
+  status.textContent = L().ok; input.value = "";
 });
 
-/* ── Theme switch: Ink (light) / Auto / Cyanotype (dark) ── */
-function setTheme(t) {
-  if (t === "system") document.documentElement.removeAttribute("data-theme");
-  else document.documentElement.setAttribute("data-theme", t);
-  document.querySelectorAll("[data-theme-set]").forEach(b => b.setAttribute("aria-pressed", b.dataset.themeSet === t));
-  try { localStorage.setItem("theme", t); } catch (e) {}
-}
-document.querySelectorAll("[data-theme-set]").forEach(b => b.addEventListener("click", () => setTheme(b.dataset.themeSet)));
-try { const saved = localStorage.getItem("theme"); if (saved) setTheme(saved); } catch (e) {}
+/* ════════════════════════════════════════════════════════════════
+   HERO: the embedding map. Canvas 2D with a hand-rolled 3D projection.
+   ════════════════════════════════════════════════════════════════ */
+function makeCloud(canvas) {
+  const ctx = canvas.getContext("2d");
+  const frame = canvas.parentElement, tip = $("#tip"), legend = $("#legend");
+  const keys = Object.keys(TOPICS);
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const SPIN = reduce ? 0 : .0016;
+  let seed = 7; const rnd = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
+  const gauss = () => { let u = 0, v = 0; while (!u) u = rnd(); while (!v) v = rnd(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+  const s = .62, centers = { agents: [s, s, s], models: [-s, -s, s], tools: [-s, s, -s], tutorials: [s, -s, -s] };
 
-/* ── Boot: saved choice, else the browser's language ── */
+  const dust = [];
+  keys.forEach(k => { for (let i = 0; i < 420; i++) { const c = centers[k], sd = .2 + rnd() * .16;
+    dust.push({ k, x: c[0] + gauss() * sd, y: c[1] + gauss() * sd, z: c[2] + gauss() * sd, a: .25 + rnd() * .55 }); } });
+  for (let i = 0; i < 260; i++) { const r = 1.25 + rnd() * .5, t = rnd() * Math.PI * 2, p = Math.acos(2 * rnd() - 1);
+    dust.push({ k: null, x: r * Math.sin(p) * Math.cos(t), y: r * Math.sin(p) * Math.sin(t), z: r * Math.cos(p), a: .15 + rnd() * .3 }); }
+
+  const items = [
+    ...ARTICLES.map(a => ({ kind: "article", ref: a, k: a.topic, href: `#read-${a.slug}` })),
+    ...RESOURCES.map(r => ({ kind: "resource", ref: r, k: r.topic, href: r.url })),
+  ].map(it => { const c = centers[it.k]; return { ...it, x: c[0] + gauss() * .2, y: c[1] + gauss() * .2, z: c[2] + gauss() * .2 }; });
+
+  let W = 0, H = 0, rotY = .6, rotX = -.35, vy = SPIN, focus = null, hover = null;
+  let running = false, active = true, visible = true, dragging = false, lx = 0, ly = 0, moved = 0;
+  const colors = {}; let fg = "#fff", faint = "#888", additive = true, monoFont = "monospace";
+
+  function recolor() {
+    const cs = getComputedStyle(document.documentElement);
+    keys.forEach(k => { colors[k] = cs.getPropertyValue(`--c-${k}`).trim(); });
+    fg = cs.getPropertyValue("--fg").trim(); faint = cs.getPropertyValue("--faint").trim();
+    additive = parseFloat(cs.getPropertyValue("--glow")) > .3;
+    monoFont = cs.getPropertyValue("--f-mono").trim() || "monospace";
+    draw();
+  }
+  function resize() {
+    const r = frame.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2);
+    W = r.width; H = r.height; if (!W) return;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); draw();
+  }
+  function project(p) {
+    const cy = Math.cos(rotY), sy = Math.sin(rotY), cx = Math.cos(rotX), sx = Math.sin(rotX);
+    const x = p.x * cy - p.z * sy, z1 = p.x * sy + p.z * cy;
+    const y = p.y * cx - z1 * sx, z = p.y * sx + z1 * cx;
+    const f = 3.4 / (z + 3.6), R = Math.min(W, H) * .36;
+    return { X: W / 2 + x * f * R, Y: H / 2 + y * f * R, f, z };
+  }
+  function draw() {
+    if (!W) return;
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = additive ? "lighter" : "source-over";
+    for (const d of dust) {
+      const P = project(d), dim = focus && d.k !== focus ? .18 : 1;
+      ctx.globalAlpha = d.a * dim * Math.min(1, P.f * .9);
+      ctx.fillStyle = d.k ? colors[d.k] : faint;
+      const sz = 1.1 * P.f + .3; ctx.fillRect(P.X - sz / 2, P.Y - sz / 2, sz, sz);
+    }
+    ctx.globalCompositeOperation = "source-over";
+    const proj = items.map(it => ({ it, P: project(it) })).sort((a, b) => b.P.z - a.P.z);
+    ctx.lineWidth = 1;
+    for (const { it, P } of proj) {   // spokes from cluster centre to each item
+      const C = project({ x: centers[it.k][0], y: centers[it.k][1], z: centers[it.k][2] });
+      ctx.globalAlpha = focus && it.k !== focus ? .05 : .22; ctx.strokeStyle = colors[it.k];
+      ctx.beginPath(); ctx.moveTo(C.X, C.Y); ctx.lineTo(P.X, P.Y); ctx.stroke();
+    }
+    for (const { it, P } of proj) {
+      const dim = focus && it.k !== focus ? .25 : 1, r = (it === hover ? 7 : it.kind === "article" ? 4.4 : 3.4) * P.f;
+      ctx.fillStyle = colors[it.k];
+      ctx.globalAlpha = .25 * dim; ctx.beginPath(); ctx.arc(P.X, P.Y, r * 2.6, 0, 7); ctx.fill();
+      ctx.globalAlpha = dim; ctx.beginPath(); ctx.arc(P.X, P.Y, r, 0, 7); ctx.fill();
+      if (it.kind === "resource") { ctx.strokeStyle = fg; ctx.lineWidth = 1.2; ctx.stroke(); }
+      if (it === hover) { ctx.globalAlpha = 1; ctx.strokeStyle = fg; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(P.X, P.Y, r + 5, 0, 7); ctx.stroke(); }
+      it.P = P;
+    }
+    ctx.font = `500 11px ${monoFont}`; ctx.textAlign = "center";
+    for (const k of keys) {
+      const C = project({ x: centers[k][0] * 1.55, y: centers[k][1] * 1.55, z: centers[k][2] * 1.55 });
+      ctx.globalAlpha = focus && k !== focus ? .3 : .95; ctx.fillStyle = colors[k];
+      ctx.fillText(TOPICS[k][lang].toUpperCase(), C.X, C.Y);
+    }
+    ctx.globalAlpha = 1;
+  }
+  function loop() {
+    if (!running) return;
+    if (!dragging) { rotY += vy; vy += (SPIN - vy) * .02; }
+    draw(); if (hover) placeTip();
+    requestAnimationFrame(loop);
+  }
+  function setRunning() {
+    const want = active && visible && !document.hidden;
+    if (want && !running) { running = true; requestAnimationFrame(loop); } else if (!want) running = false;
+  }
+
+  canvas.addEventListener("pointerdown", e => { dragging = true; moved = 0; lx = e.clientX; ly = e.clientY; canvas.setPointerCapture(e.pointerId); });
+  canvas.addEventListener("pointerup", () => { dragging = false; if (moved < 6 && hover) location.hash = hover.href; });
+  canvas.addEventListener("pointermove", e => {
+    const r = canvas.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top;
+    if (dragging) {
+      const dx = e.clientX - lx, dy = e.clientY - ly; moved += Math.abs(dx) + Math.abs(dy);
+      rotY += dx * .008; rotX = Math.max(-1.2, Math.min(1.2, rotX + dy * .006)); vy = dx * .0008; lx = e.clientX; ly = e.clientY;
+    }
+    let best = null, bd = 16;
+    for (const it of items) if (it.P) { const d = Math.hypot(it.P.X - mx, it.P.Y - my); if (d < bd) { bd = d; best = it; } }
+    if (best !== hover) { hover = best; showTip(); }
+    canvas.style.cursor = hover ? "pointer" : "";
+    if (!running) draw();
+  });
+  canvas.addEventListener("pointerleave", () => { hover = null; showTip(); if (!running) draw(); });
+  function placeTip() { tip.style.left = Math.max(120, Math.min(W - 120, hover.P.X)) + "px"; tip.style.top = hover.P.Y + "px"; }
+  function showTip() {
+    if (!hover) { tip.hidden = true; return; }
+    const t = hover.ref[lang], label = hover.kind === "article" ? TOPICS[hover.k][lang] : TYPES[hover.ref.type][lang];
+    tip.innerHTML = `<span class="tag" data-topic="${hover.k}">${esc(label)}</span><b>${esc(t.title)}</b><span class="mono" style="color:var(--faint)">${L().open} →</span>`;
+    tip.hidden = false; placeTip();
+  }
+  function relabel() {
+    legend.innerHTML = keys.map(k => `<button type="button" data-topic="${k}" data-k="${k}" aria-pressed="${focus === k}"><i></i>${esc(TOPICS[k][lang])}</button>`).join("");
+    $("#hud-count").textContent = L().items(items.length);
+    if (hover) showTip();
+    draw();
+  }
+  legend.addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; focus = focus === b.dataset.k ? null : b.dataset.k; relabel(); });
+
+  new ResizeObserver(resize).observe(frame);
+  new IntersectionObserver(([en]) => { visible = en.isIntersecting; setRunning(); }).observe(frame);
+  document.addEventListener("visibilitychange", setRunning);
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", recolor);
+
+  return {
+    recolor, relabel,
+    setActive(v) { active = v; setRunning(); if (v) requestAnimationFrame(resize); },
+    init() { recolor(); resize(); relabel(); setRunning(); },
+  };
+}
+
+/* ── Boot ── */
+try { const t = localStorage.getItem("theme"); if (t) setTheme(t); } catch (e) {}
 let initial = "en";
 try { initial = localStorage.getItem("lang") || (/^zh/i.test((navigator.languages && navigator.languages[0]) || navigator.language || "") ? "zh" : "en"); } catch (e) {}
-setLang(initial, { save: false });
+setLang(initial, false);
+cloud = makeCloud($("#cloud"));
+cloud.init();
 route();
+if (document.fonts) document.fonts.ready.then(() => cloud.recolor());
 </script>
 </body>
 </html>
