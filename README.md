@@ -6,11 +6,16 @@ It's a single static file (`index.html`) with no build step and no dependencies 
 
 ## Design
 
-- **Embedding-map hero.** The opening screen is a live, draggable 3D point cloud. Every article and resource is a glowing point, clustered by topic (Agents, Models, Tools, Tutorials). Hover a point to see its title, click to open it, and use the legend to highlight one cluster.
-- **Topic colours run through the whole site.** Each topic has its own hue, used on covers, tags, filters and the map.
-- **Generative covers.** Every article and resource gets a gradient cover with a topic icon, seeded from its slug. No image files are needed.
-- **Dark-first, with a light theme.** The footer has a Dark / Auto / Light switch.
-- **Type:** Archivo, set extra-wide for headlines; Hanken Grotesk for body text; JetBrains Mono for labels and code; Noto Sans SC for Chinese.
+The design takes inspiration from [oiloil.org](https://oiloil.org) without copying it.
+
+- **Look:** a quiet white page with near-black text and lighter grey tints, system fonts, hairline rules, and small uppercase monospace labels.
+- **Accents:** a periwinkle highlighter and a sparing electric-blue accent.
+- **Catalog structure:** numbered sections (01 Articles, 02 Resources, 03 About, 04 Elsewhere), `2026.10.28`-style dates, and `→` / `↗` link labels.
+- **Hype filter (hero):** a card that swaps an AI marketing claim for what the test actually found. It flips once on load; visitors can then toggle it and page through claims.
+- **Live resource mockups:** every resource card draws a small working mockup of itself in HTML and CSS: a prompt file, an agent trace, an eval sheet, a tool database, a checklist, a course outline.
+- **Copy for your LLM:** each article has a button that copies it as Markdown, ready to paste into a chat.
+- **Motion:** springy hover lifts and a gentle pointer tilt. It respects `prefers-reduced-motion`.
+- **Themes:** light, with a dark theme. The footer switch offers Light / Auto / Dark.
 
 ## Languages
 
@@ -31,14 +36,16 @@ Everything is at the bottom of `index.html`:
 | Article full text | `BODIES.en` / `BODIES.zh`, keyed by slug |
 | Resources | `RESOURCES` |
 | Topics and resource types | `TOPICS`, `TYPES` |
+| Hype filter claims | `CLAIMS` |
+| Resource card mockups | `SCENES` (pick one per resource with `scene`) |
 | Static page text (Chinese) | `UI.zh` |
 | Audience numbers | elements with `data-i18n="stat.*"` plus their `UI.zh` entries |
 
-New articles and resources appear on the map, in the lists and in the counts automatically.
+New articles and resources appear in the lists and counts automatically.
 
 ## Before launch
 
-- Replace the placeholders: the name "Kai Chen", the bio, audience numbers, articles, resources and the `KC` avatar (put an `<img>` inside `.avatar > div`).
+- Replace the placeholders: the name "Kai Chen", the bio, audience numbers, articles, resources, Hype filter claims and the `KC` portrait (put an `<img>` inside `.portrait`).
 - Connect the newsletter form to your provider (Beehiiv, Buttondown, ConvertKit, …).
 - Point resource and social links at real URLs.
 
